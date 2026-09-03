@@ -1,5 +1,5 @@
 ---
-description: First-run setup - find the CLI, sign in, Teamwork key, and your timesheet preferences
+description: First-run setup - find the CLI, sign in to Microsoft, and set up time logging if you want it
 ---
 
 Walk the user through getting Cir'Claude working, one step at a time. Run the
@@ -25,11 +25,21 @@ broken step.
    verify with `circle whoami` and read back the address it reports, so they
    can confirm it is theirs.
 
-4. **Teamwork key**, only if they log time. Point them at Teamwork > their
-   avatar > Edit My Details > API & Mobile, and have them set
-   `TEAMWORK_API_KEY` in their own environment. **Never ask them to paste the
-   key into the chat.** Verify with `circle whoami` in a fresh terminal: it
-   should name them and show a person id.
+4. **Time logging.** Optional, and worth skipping entirely if they are only
+   testing the install. There are two routes and either is fine:
+
+   - If the **claude.ai Teamwork MCP connector** is attached to their Claude
+     account, that already works and needs no key at all. Check by calling a
+     Teamwork tool rather than asking them.
+   - Otherwise a **`TEAMWORK_API_KEY`** from Teamwork > their avatar > Edit My
+     Details > API & Mobile, set in their own environment. **Never ask them to
+     paste the key into the chat.** Verify with `circle whoami` in a fresh
+     terminal: it should name them and show a person id.
+
+   The difference that matters: `circle tw-log` has a real dry run and the
+   connector does not, so on the connector you build the per-day table
+   yourself before posting anything. Either way nothing posts without their
+   explicit go.
 
 5. **Timesheet preferences.** If `~/.circle/timesheet-policy.md` does not
    exist, ask them briefly: how long their standard day is, how they treat

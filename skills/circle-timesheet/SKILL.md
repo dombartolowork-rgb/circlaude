@@ -95,16 +95,24 @@ client's money to the wrong job.
 the table they approved, and report any difference rather than restating your
 own arithmetic. One "go" covers the split and the codes shown in that table.
 
-## If the CLI cannot run
+## Two routes: the CLI or the connector
 
-If `TEAMWORK_API_KEY` is not set and the claude.ai Teamwork MCP connector is
-attached, the same process maps onto it: `twprojects-list_timelogs` (with
+Either works, and which one is available depends on the person.
+
+**`circle tw-*`** needs `TEAMWORK_API_KEY` in the environment. Prefer it when
+it is there, for one reason: `circle tw-log` has a **real dry run**, so the
+plan can be checked against resolved project and task names before anything
+is written.
+
+**The claude.ai Teamwork MCP connector** needs no key and works if it is
+attached to their Claude account. The same process maps onto it: `twprojects-list_timelogs` (with
 their `assigned_user_ids`) instead of `tw-logged`, `twprojects-list_projects`
 with a `search_term` instead of `tw-projects`, `twprojects-create_timelog`
 per entry instead of `tw-log --commit`. The connector has **no dry run**, so
 build the per-day table yourself from the entries file before posting, and
-hold to the same explicit-go rule. Prefer getting the key set up: that is
-what `/circlaude:onboard` is for.
+hold to the same explicit-go rule. Losing the dry run is the only real cost,
+and it is the step that catches a wrong project code, so do not skip building
+that table by hand.
 
 ## Billable or internal
 
