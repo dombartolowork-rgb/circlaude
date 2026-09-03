@@ -5,6 +5,15 @@ description: Log the user's weekly time into Teamwork, reconstructed from their 
 
 # Weekly time logging to Teamwork
 
+## Invoking the CLI
+
+Examples below write `circle` for readability. **Run it as
+`"$CLAUDE_PLUGIN_ROOT/bin/circle"`** unless `circle` is already on PATH: when
+this is installed as a plugin there is no `circle` on PATH and no repo folder
+in the home directory, so a bare `circle` fails with "command not found".
+Check with `command -v circle` once and use whichever works for the rest of
+the session.
+
 Circle logs full weeks: billable client work and internal overhead both.
 Overhead is real work and gets logged too, so a light day is a problem to
 solve, not a fact to report.

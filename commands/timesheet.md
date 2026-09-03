@@ -1,6 +1,14 @@
 ---
 description: Log time to Teamwork for a period, dry run first
 ---
+## Invoking the CLI
+
+Examples below write `circle` for readability. **Run it as
+`"$CLAUDE_PLUGIN_ROOT/bin/circle"`** unless `circle` is already on PATH: when
+this is installed as a plugin there is no `circle` on PATH and no repo folder
+in the home directory, so a bare `circle` fails with "command not found".
+Check with `command -v circle` once and use whichever works for the rest of
+the session.
 
 Use the `circle-timesheet` skill. The period is: $ARGUMENTS (default: this
 week).

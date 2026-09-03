@@ -5,8 +5,13 @@ description: Read, search, draft, send and reply to the user's Outlook email, lo
 
 # Circle email, calendar and directory
 
-Everything runs through one command. If `circle` is not on PATH, use
-`~/CirClaude/bin/circle` (`bin\circle.cmd` on Windows).
+Everything runs through one command, `circle`.
+
+**Invoking it:** examples below write `circle` for readability. Run it as
+`"$CLAUDE_PLUGIN_ROOT/bin/circle"` unless `circle` is already on PATH. When
+this is installed as a plugin there is no `circle` on PATH and no repo folder
+in the home directory, so a bare `circle` fails with "command not found".
+Check once with `command -v circle` and use whichever works.
 
 ```bash
 circle whoami          # confirms sign-in and scopes
