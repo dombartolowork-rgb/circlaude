@@ -42,7 +42,7 @@ See `ONBOARDING.md` for the walkthrough, or in Claude Code just run
 The short version:
 
 ```
-git clone <this repo> %USERPROFILE%\CirClaude
+git clone https://github.com/dombartolowork-rgb/circlaude.git %USERPROFILE%\CirClaude
 cd %USERPROFILE%\CirClaude
 bin\circle login
 bin\circle whoami
@@ -51,7 +51,7 @@ bin\circle whoami
 Then in Claude Code:
 
 ```
-/plugin marketplace add %USERPROFILE%\CirClaude
+/plugin marketplace add https://github.com/dombartolowork-rgb/circlaude
 /plugin install circlaude@circlaude
 ```
 

@@ -76,7 +76,7 @@ dereferenced at install. So the moment there is a remote, add this entry to
 ```json
 {
   "name": "circlaude",
-  "source": { "source": "github", "repo": "<org>/CirClaude" },
+  "source": { "source": "github", "repo": "dombartolowork-rgb/circlaude" },
   "description": "Cir'Claude, the Circle Agency work assistant.",
   "version": "0.2.0",
   "category": "productivity",
