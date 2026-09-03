@@ -1,56 +1,117 @@
 ---
-description: First-run setup - find the CLI, sign in to Microsoft, and set up time logging if you want it
+description: First-run setup - get Cir'Claude connected to your Circle account
 ---
 
-Walk the user through getting Cir'Claude working, one step at a time. Run the
-checks yourself where you can, and only ask them to do the parts that need
-their own browser or credentials. Windows is the normal case here.
+You are setting someone up who may never have used a tool like this. Assume
+they do not know what an API key, a terminal, a PATH or a command line is, and
+that they should not have to.
 
-Stop at the first step that fails and say which one it was. Do not push past a
-broken step.
+**How to talk to them.** Plain English, one step at a time, and say what is
+about to happen before it happens. Never paste a command at them and ask them
+to run it. Never use the words API, CLI, PATH, environment variable, token or
+repository unless they use them first. If something technical goes wrong,
+tell them what it means for them and what you are doing about it, not the
+error text.
 
-1. **Find the CLI.** Run `command -v circle`. If that prints nothing, the CLI
-   is at `"$CLAUDE_PLUGIN_ROOT/bin/circle"`, which is normal for a plugin
-   install. Use that form for everything below. Tell them which one is in play,
-   and that typing a bare `circle` in their own terminal will not work unless
-   they add it to PATH themselves.
+**Do the work yourself.** Everything here is something you run, apart from one
+browser sign-in that only they can do. Do not narrate each command. Just do
+it and tell them how it went.
 
-2. **Check Python.** `py -3 --version` on Windows, `python3 --version` on a
-   Mac. If it is missing they need `winget install Python.Python.3.12` and then
-   a new terminal. Warn them that the bare `python` command on Windows may be
-   the Microsoft Store stub, which looks installed but is not.
+Go one step at a time and stop at the first thing that fails. Tell them
+plainly which bit did not work, and that Dom can sort it, rather than trying
+to push through.
 
-3. **Sign in to Microsoft.** They must run `circle login` themselves, in their
-   own terminal, because it prints a device code to type into a browser. Then
-   verify with `circle whoami` and read back the address it reports, so they
-   can confirm it is theirs.
+---
 
-4. **Time logging.** Optional, and worth skipping entirely if they are only
-   testing the install. There are two routes and either is fine:
+**1. Find the command.**
 
-   - If the **claude.ai Teamwork MCP connector** is attached to their Claude
-     account, that already works and needs no key at all. Check by calling a
-     Teamwork tool rather than asking them.
-   - Otherwise a **`TEAMWORK_API_KEY`** from Teamwork > their avatar > Edit My
-     Details > API & Mobile, set in their own environment. **Never ask them to
-     paste the key into the chat.** Verify with `circle whoami` in a fresh
-     terminal: it should name them and show a person id.
+Run `command -v circle`. If nothing comes back, use
+`"$CLAUDE_PLUGIN_ROOT/bin/circle"` for everything below. That is normal.
+Do not mention any of this to them.
 
-   The difference that matters: `circle tw-log` has a real dry run and the
-   connector does not, so on the connector you build the per-day table
-   yourself before posting anything. Either way nothing posts without their
-   explicit go.
+**2. Check Python is there.**
 
-5. **Timesheet preferences.** If `~/.circle/timesheet-policy.md` does not
-   exist, ask them briefly: how long their standard day is, how they treat
-   all-agency days and shoot days, whether appointments on a working day get
-   logged, and anything else they already know they do. Write the answers to
-   that file as short bullets and show them what you saved.
+Run `py -3 --version` on Windows, `python3 --version` on a Mac. If it is
+missing, tell them:
 
-6. **Smoke test.** `circle inbox --limit 5` and `circle agenda`. If both
-   print, they are done. Give them three things to try in plain English: "what
-   do I need to reply to", "am I free Thursday afternoon", "did I log all my
-   time last week".
+> You need one thing installed first, called Python. IT can do it, or you can
+> run this yourself if you have the Windows store thing: `winget install
+> Python.Python.3.12`. Then come back and we will pick up where we left off.
 
-If anything fails, name the step and what to check. ONBOARDING.md has the
-fixes for the common ones.
+Then stop. If Windows reports a version but things still fail later, it is
+probably the Microsoft Store placeholder rather than the real thing.
+
+**3. Sign them in to Microsoft.**
+
+Say what is coming first:
+
+> Right, I need to connect this to your Circle account. I will get you a short
+> code, you type it into a Microsoft page, and that is the only bit you have
+> to do. It signs in as you, so it can only ever see what you can already see.
+
+Run `circle login` **in the background** and read its output. It prints a
+short code and a URL. Give them both, clearly:
+
+> Open **microsoft.com/devicelogin** and enter this code: **XXXXXXXXX**
+> Then sign in with your normal Circle email, the same as Outlook.
+> You have about 15 minutes, so no rush. Tell me when you are done.
+
+While they do that the sign-in is waiting in the background and will pick
+itself up. When they say they are done, run `circle whoami` and read back the
+address it reports:
+
+> That worked. It is signed in as craig.macfarlane@circleagency.co.uk, and it
+> will stay signed in, so you will not have to do that again.
+
+If it did not take, the code may have expired. Say so lightly and get a new
+one.
+
+**4. Check it can actually see things.**
+
+Run `circle inbox --limit 5` and `circle agenda`. Do not show them the raw
+output. Tell them what you can see, in a sentence:
+
+> I can see your inbox and your calendar. You have four unread and a Costa
+> call at two.
+
+That is the proof it works.
+
+**5. Ask how they log time.** Only if they want time logging at all. If they
+are just trying this out, skip it and say they can set it up later.
+
+First check whether the **Teamwork MCP connector** is attached to their
+Claude account, by quietly trying a Teamwork tool. If it works, they need
+nothing else. Say so and move on.
+
+If it does not, they need a key from Teamwork. Put it in their terms:
+
+> If you want it to help with timesheets, there is a long password you copy
+> out of Teamwork. It is under your avatar, Edit My Details, then API &
+> Mobile. Do not paste it to me, just save it somewhere on your machine and I
+> will show you where it goes. Or skip this, it is only for timesheets.
+
+**Never ask them to paste a key into the chat.**
+
+**6. Learn how they log their time.** Only if step 5 happened.
+
+If `~/.circle/timesheet-policy.md` does not exist, ask them a few short
+questions, conversationally, not as a form: how long their normal working day
+is, what they do with all-agency days and shoot days, whether they log a
+dentist appointment. Write the answers to that file as short bullets and tell
+them what you have saved, so they can correct it.
+
+**7. Show them what to say.**
+
+End here, with examples rather than instructions:
+
+> That is it, you are set up. You do not need to remember any commands, just
+> ask. Things people ask most:
+>
+> - what do I need to reply to today
+> - am I free Thursday afternoon
+> - draft a reply to Rich about the status deck
+> - did I log all my time last week
+>
+> One thing worth knowing: it will never send an email without showing you
+> first and asking. Same with timesheets, it shows you what it worked out and
+> waits for you to say go. So have a play, you cannot break anything.
