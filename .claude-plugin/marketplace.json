@@ -1,0 +1,21 @@
+{
+  "name": "circlaude",
+  "owner": {
+    "name": "Dom Bartolo",
+    "email": "dom.bartolo@circleagency.co.uk"
+  },
+  "metadata": {
+    "description": "Cir'Claude, the Circle Agency work assistant.",
+    "version": "0.2.0"
+  },
+  "plugins": [
+    {
+      "name": "circlaude",
+      "source": "./",
+      "description": "Cir'Claude, the Circle Agency work assistant: Outlook mail and calendar, colleague lookup, Teamwork timesheets, SharePoint project setup, and the agency's working conventions.",
+      "version": "0.2.0",
+      "category": "productivity",
+      "strict": false
+    }
+  ]
+}

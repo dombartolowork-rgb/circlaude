@@ -1,0 +1,17 @@
+{
+  "name": "circlaude",
+  "description": "Cir'Claude, the Circle Agency work assistant: Outlook mail and calendar, colleague lookup, Teamwork timesheets, SharePoint project setup, and the agency's working conventions. Sending email is gated behind human review.",
+  "version": "0.2.0",
+  "author": {
+    "name": "Dom Bartolo",
+    "email": "dom.bartolo@circleagency.co.uk"
+  },
+  "keywords": [
+    "circle-agency",
+    "outlook",
+    "microsoft-graph",
+    "teamwork",
+    "sharepoint",
+    "timesheets"
+  ]
+}

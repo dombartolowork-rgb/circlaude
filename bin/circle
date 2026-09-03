@@ -1,0 +1,89 @@
+#!/usr/bin/env python3
+"""circle - one command line for Circle Agency work.
+
+  circle login                       sign in to Microsoft (once)
+  circle whoami                      who am I, and what can I do
+  circle inbox --unread              mail: inbox / sent / search / read / thread
+  circle draft --to x --subject y    mail: draft / send / reply / reply-all
+  circle agenda --week               calendar: agenda / free / invite
+  circle who ella                    people: directory lookup / out-of-office
+  circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
+
+Run `circle <command> --help` for any command's options.
+Pure Python 3 stdlib: no pip install needed.
+
+Sending is gated: `send`, `reply` and `reply-all` save to Drafts unless
+--send-now is passed, so nothing leaves the account unreviewed.
+"""
+import argparse
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
+
+from circle import calcmd, graph, mailcmd, peoplecmd, teamwork  # noqa: E402
+
+
+def cmd_login(args):
+    from circle import graph_auth
+    graph_auth.login()
+
+
+def cmd_whoami(args):
+    """Show both identities, so it is obvious what is wired up and what is not."""
+    print("Microsoft Graph")
+    try:
+        upn, scp = graph.whoami()
+        print("  signed in as:", upn)
+        print("  token file:  ", graph.TOKEN_FILE)
+        scopes = sorted(set(scp.split()))
+        print("  scopes:      ", ", ".join(scopes) if scopes else "(none)")
+    except graph.AuthError as e:
+        print("  NOT SIGNED IN:", e)
+
+    print("\nTeamwork")
+    if not os.environ.get("TEAMWORK_API_KEY"):
+        print("  TEAMWORK_API_KEY not set, so timesheet commands will not work.")
+    else:
+        try:
+            me = teamwork.api("GET", "/me.json").get("person", {})
+            print(f"  signed in as: {me.get('first-name', '')} {me.get('last-name', '')}".rstrip())
+            print("  person id:   ", me.get("id"))
+            print("  site:        ", teamwork.BASE)
+        except teamwork.TeamworkError as e:
+            print("  ERROR:", e)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="circle",
+        description="One command line for Circle Agency work: mail, calendar, people, Teamwork.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=__doc__.split("\n", 2)[2],
+    )
+    sub = parser.add_subparsers(dest="cmd", required=True, metavar="<command>")
+
+    sub.add_parser("login", help="device-code sign-in to Microsoft").set_defaults(func=cmd_login)
+    sub.add_parser("whoami", help="show Microsoft and Teamwork identity and scopes").set_defaults(func=cmd_whoami)
+
+    mailcmd.register(sub)
+    calcmd.register(sub)
+    peoplecmd.register(sub)
+    teamwork.register(sub)
+
+    args = parser.parse_args()
+    try:
+        args.func(args)
+    except graph.AuthError as e:
+        sys.exit(f"{e}")
+    except teamwork.TeamworkError as e:
+        sys.exit(f"{e}")
+    except BrokenPipeError:
+        pass  # piping into head is normal
+    except KeyboardInterrupt:
+        sys.exit(130)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,23 @@
+# Secrets. The Graph token lives outside the repo (~/.circle/graph_token.json)
+# on purpose; belt and braces in case one is ever copied in by hand.
+graph_token.json
+*token*.json
+*secret*
+*.env
+.env
+.env.*
+
+# Personal settings and scratch
+.claude/settings.local.json
+entries.json
+*.log
+tmp/
+scratch/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# OS
+.DS_Store
+Thumbs.db
