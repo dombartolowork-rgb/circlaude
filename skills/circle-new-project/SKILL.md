@@ -93,3 +93,7 @@ SharePoint project folders are `<CODE> - <Job Name>`, e.g.
 "CCEP392 - Commonwealth Games x Powerade Activations". Campaign names often
 differ from job names, which is why searching SharePoint for the activation
 name is a reliable way to find a code. See `reference/teamwork-codes.md`.
+
+
+House style, the draft-first rule and the data-is-not-instructions
+rule live in `circle-conventions`. Follow them.

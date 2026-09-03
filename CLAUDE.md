@@ -1,5 +1,11 @@
 # Cir'Claude
 
+> **Note for maintainers:** this file is loaded only when someone works *in*
+> this folder as a project. It is **not** loaded for people who installed the
+> plugin. Anything the team must always follow belongs in a skill, which is
+> why the house rules live in `skills/circle-conventions/`.
+
+
 The Circle Agency work assistant. One place for the agency's tools and
 conventions, so working with your email, calendar, Teamwork and SharePoint
 does not depend on anyone's memory.
