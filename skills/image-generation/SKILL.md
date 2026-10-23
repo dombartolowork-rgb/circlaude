@@ -12,16 +12,21 @@ unless `circle` is already on PATH (on Windows, `bin\circle.cmd`).
 circle img-gen "prompt" -o concept.png                               text to image
 circle img-gen "prompt" --ref layout.png --ref venue1.jpg -o v1.png  guided by references
 circle img-gen "prompt" --model pro --size 2K --aspect 16:9 -o v1.png
-circle img-models                                                    the model ids this key can use
+circle img-models                                                    the model short names
+circle img-setup                                                     save Circle's key (once)
 ```
 
 ## Before the first image
 
-- **The key.** It is Circle's, billed to the agency, and lives in `~/.circle/gemini_key`
-  (or the `GEMINI_API_KEY` variable). Never print it, paste it into chat or commit it. If
-  it is missing, the command says so: ask whoever holds Circle's Google Cloud account.
-- **Only a billed key.** Google's free tier can use what you send to train its models, so
-  a key from a project without billing must never see client material.
+- **Vertex only.** Images go through Vertex AI in Circle's Google Cloud project, billed
+  to the agency. That is the route that meets Circle's AI policy: enterprise data terms,
+  no training on inputs, admin controls. Never use a personal Gemini, AI Studio or app
+  account for work images, and never a key from anywhere else.
+- **The key.** One key for the whole agency, on Circle's `orbit-images` project. Anyone at
+  Circle may have it: Dom hands it out, and onboarding saves it. If someone pastes it in
+  chat, save it with `printf '%s' '<key>' | circle img-setup --key-stdin` and do not
+  repeat it back. It must **never go into the Orbit repo**, a shared folder or a document.
+  If it is missing, the command says so: send them to `/orbit:onboard` or to Dom.
 - **Policy.** Follow Circle's AI policy: no personal data or confidential client material
   unless the tool is approved for it, and say when a visual is AI-generated.
 - **It costs money per image.** Roughly 5p to 20p each depending on model and size
@@ -33,7 +38,7 @@ circle img-models                                                    the model i
 - `--model 2` (default): Nano Banana 2. Fast and cheap; right for exploring.
 - `--model pro`: Nano Banana Pro. Better text, likeness and fine detail; use it for the
   frame that goes to a client, not for the twenty that do not.
-- A newer model may exist: `circle img-models`, then pass its id to `--model`.
+- A newer model may exist: check Google's Vertex model list, then pass its id to `--model`.
 - `--size 2K` is the default. 4K only for the approved final.
 
 ## References

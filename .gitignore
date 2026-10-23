@@ -3,6 +3,8 @@
 graph_token.json
 *token*.json
 *secret*
+*_key
+*.key
 *.env
 .env
 .env.*

@@ -1,13 +1,18 @@
-"""Generate and edit images with Google's Nano Banana models (Gemini image).
+"""Generate and edit images with Google's Nano Banana models (Gemini image), on Vertex AI.
 
     circle img-gen "prompt" -o out.png                      text to image
     circle img-gen "prompt" --ref blockout.png --ref a.jpg  guided by reference images, in order
     circle img-gen "prompt" --model pro --size 2K --aspect 16:9
-    circle img-models                                       which image models this key can use
+    circle img-models                                       the model short names
+    circle img-setup --key-stdin < key.txt                  save Circle's Vertex key (or from the clipboard)
 
-The key is Circle's, billed to the agency: GEMINI_API_KEY, or the file
-~/.circle/gemini_key. It is never printed. Only use a key from a Google Cloud
-project with billing on: the free tier lets Google train on what you send.
+It goes through Vertex AI in Circle's Google Cloud project, never the Gemini app
+or AI Studio: Vertex is the route that meets Circle's AI policy (enterprise data
+terms, no training on inputs, admin controls). The key is Circle's, billed to
+the agency: VERTEX_API_KEY, or the file ~/.circle/vertex_key, and the project id
+is "vertex_project" in ~/.circle/config.json (orbit-images unless told otherwise).
+Anyone at Circle may have the key; it must never go into this repo, and it is
+never printed.
 
 Every image is saved with its prompt beside it (out.txt), and each call is added
 to ~/.circle/image_log.csv so spend can be checked against the Google bill.
@@ -21,9 +26,13 @@ import os
 import urllib.error
 import urllib.request
 
-API = "https://generativelanguage.googleapis.com/v1beta"
-KEY_FILE = os.path.join(os.path.expanduser("~"), ".circle", "gemini_key")
-LOG_FILE = os.path.join(os.path.expanduser("~"), ".circle", "image_log.csv")
+HOST = "https://aiplatform.googleapis.com/v1"
+LOCATION = "global"   # the image models are served from global only
+DEFAULT_PROJECT = "orbit-images"   # Circle's central Google Cloud project
+CIRCLE_DIR = os.path.join(os.path.expanduser("~"), ".circle")
+KEY_FILE = os.path.join(CIRCLE_DIR, "vertex_key")
+CONFIG_FILE = os.path.join(CIRCLE_DIR, "config.json")
+LOG_FILE = os.path.join(CIRCLE_DIR, "image_log.csv")
 
 # Short names for the models. Anything else is passed through as a model id,
 # so a newer model works without a code change: check `circle img-models`.
@@ -40,18 +49,31 @@ class ImageError(RuntimeError):
 
 
 def _key():
-    k = os.environ.get("GEMINI_API_KEY", "").strip()
+    k = os.environ.get("VERTEX_API_KEY", "").strip()
     if not k and os.path.isfile(KEY_FILE):
         with open(KEY_FILE, encoding="utf-8") as f:
             k = f.read().strip()
     if not k:
-        raise ImageError("No image key. Save Circle's Gemini API key to ~/.circle/gemini_key "
-                         "(or set GEMINI_API_KEY). See the image-generation skill for how to get one.")
+        raise ImageError("No image key. Get Circle's image key from Dom and save it with "
+                         "`circle img-setup` (or run /orbit:onboard).")
     return k
 
 
+def _config():
+    if not os.path.isfile(CONFIG_FILE):
+        return {}
+    with open(CONFIG_FILE, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _project():
+    return os.environ.get("VERTEX_PROJECT", "").strip() or _config().get("vertex_project") \
+        or DEFAULT_PROJECT
+
+
 def _call(method, path, body=None):
-    req = urllib.request.Request(API + path, method=method,
+    url = f"{HOST}/projects/{_project()}/locations/{LOCATION}/publishers/google{path}"
+    req = urllib.request.Request(url, method=method,
                                  data=json.dumps(body).encode("utf-8") if body is not None else None,
                                  headers={"x-goog-api-key": _key(), "Content-Type": "application/json"})
     try:
@@ -64,7 +86,10 @@ def _call(method, path, body=None):
         except (ValueError, KeyError, TypeError):
             detail = detail[:800]
         if e.code == 404:
-            detail += "\nThat model id may have changed: run `circle img-models` and pass --model <id>."
+            detail += ("\nThat model id may have changed: check Google's Vertex model list "
+                       "and pass --model <id>.")
+        elif e.code in (401, 403):
+            detail += "\nCheck the key and project with `circle img-setup`, and that the Vertex AI API is on."
         raise ImageError(f"Google returned {e.code}: {detail}")
 
 
@@ -132,12 +157,51 @@ def cmd_gen(args):
 
 
 def cmd_models(args):
-    data = _call("GET", "/models?pageSize=1000")
-    rows = [m for m in data.get("models", []) if "image" in m.get("name", "")]
-    if not rows:
-        print("No image models visible to this key.")
-    for m in rows:
-        print(f"{m['name'].split('/')[-1]:40} {m.get('displayName', '')}")
+    for short, model in MODELS.items():
+        print(f"--model {short:5} {model}")
+    print("Any other Vertex model id can be passed to --model, e.g. a newer Nano Banana.")
+
+
+def _clipboard():
+    import subprocess
+    import sys
+    cmd = ["pbpaste"] if sys.platform == "darwin" else \
+        ["powershell", "-NoProfile", "-Command", "Get-Clipboard"]
+    try:
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=10).stdout.strip()
+    except (OSError, subprocess.SubprocessError):
+        return ""
+
+
+def cmd_setup(args):
+    import getpass
+    import sys
+    cfg = _config()
+    project = args.project or cfg.get("vertex_project") or DEFAULT_PROJECT
+    if args.key_stdin:
+        key = "".join(sys.stdin.read().split())
+        if not 30 <= len(key) <= 200:
+            raise ImageError("That does not look like the image key. Nothing saved.")
+    elif sys.stdin.isatty() and not args.clipboard:
+        key = getpass.getpass("Paste Circle's Vertex key (it will not show): ").strip()
+    else:
+        # Claude's ! prompt cannot take typed input, so read the copied key instead
+        key = "".join(_clipboard().split())
+        if not 30 <= len(key) <= 200:
+            raise ImageError("Copy the key first, then run this again. Nothing saved.")
+    if not key:
+        raise ImageError("No key entered, nothing saved.")
+    os.makedirs(CIRCLE_DIR, exist_ok=True)
+    cfg["vertex_project"] = project
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump(cfg, f, indent=2)
+    with open(KEY_FILE, "w", encoding="utf-8") as f:
+        f.write(key + "\n")
+    try:
+        os.chmod(KEY_FILE, 0o600)
+    except OSError:
+        pass
+    print(f"Saved. Key in {KEY_FILE}, project {project} in {CONFIG_FILE}.")
 
 
 def register(sub):
@@ -152,4 +216,9 @@ def register(sub):
     p.add_argument("-o", "--out", default="image.png")
     p.set_defaults(func=cmd_gen)
 
-    sub.add_parser("img-models", help="list the image models Circle's key can use").set_defaults(func=cmd_models)
+    sub.add_parser("img-models", help="the image model short names and their Vertex ids").set_defaults(func=cmd_models)
+    p = sub.add_parser("img-setup", help="save Circle's Vertex key and project (copy the key first)")
+    p.add_argument("--project", help=f"the Google Cloud project id (default {DEFAULT_PROJECT})")
+    p.add_argument("--key-stdin", action="store_true", help="read the key from standard input")
+    p.add_argument("--clipboard", action="store_true", help="take the key from the clipboard")
+    p.set_defaults(func=cmd_setup)

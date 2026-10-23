@@ -51,8 +51,8 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **ffmpeg** (for video and clips) - `circle yt-setup --ffmpeg` fetches it into
   `~/.circle/bin`, or IT push it
 - **Blender** (optional, for previz and spaces) - free from blender.org
-- **Circle's Gemini API key** (optional, for image generation) - saved to
-  `~/.circle/gemini_key`, from whoever holds Circle's Google Cloud account
+- **Circle's Vertex AI key** (optional, for image generation) - from whoever holds
+  Circle's Google Cloud account, saved during `/orbit:onboard`; never commit it
 
 IT push the installs. On a Mac, Python and Git are usually already present;
 install ffmpeg separately.

@@ -92,7 +92,30 @@ them in a sentence ("I can see the Project Tracker.").
 
 If it did not take, the code may have expired. Say so lightly and get a new one.
 
-**5. Ask how they log time.** Only if they want time logging at all. If they
+**5. Images, if they want them.**
+
+Ask:
+
+> Do you want to make images with it, things like concept visuals, mock-ups, or a
+> real-looking picture of a venue? It uses Circle's account, so there is a key for
+> it that Dom gives out. If you have it, paste it here. If not, we can skip this
+> and you can add it any time.
+
+If they paste it, save it without repeating it back to them:
+
+`printf '%s' '<the key>' | circle img-setup --key-stdin`
+
+Then make one small test picture to prove it works, and open it for them:
+
+`circle img-gen "a white coffee cup on a wooden table, morning light" --size 1K -o ~/orbit_test.png`
+
+> That worked, here is your first one. Just ask for images in plain words from
+> now on, and you can give it photos to work from.
+
+If it fails with a permission or key error, the key was probably copied short.
+Ask them to copy it again. If it still fails, say Dom can sort it and move on.
+
+**6. Ask how they log time.** Only if they want time logging at all. If they
 are just trying this out, skip it and say they can set it up later.
 
 First check whether the **Teamwork MCP connector** is attached to their
@@ -106,9 +129,10 @@ If it does not, they need a key from Teamwork. Put it in their terms:
 > Mobile. Do not paste it to me, just save it somewhere on your machine and I
 > will show you where it goes. Or skip this, it is only for timesheets.
 
-**Never ask them to paste a key into the chat.**
+**Never ask them to paste their Teamwork key into the chat**: that one is personal
+to them. (Circle's image key in step 5 is different: it is shared, and pasting it is fine.)
 
-**6. Learn how they log their time.** Only if step 5 happened.
+**7. Learn how they log their time.** Only if step 6 happened.
 
 If `~/.circle/timesheet-policy.md` does not exist, ask them a few short
 questions, conversationally, not as a form: how long their normal working day
@@ -116,7 +140,7 @@ is, what they do with all-agency days and shoot days, whether they log a
 dentist appointment. Write the answers to that file as short bullets and tell
 them what you have saved, so they can correct it.
 
-**7. Show them what to say.**
+**8. Show them what to say.**
 
 End here, with examples rather than instructions:
 
@@ -127,6 +151,7 @@ End here, with examples rather than instructions:
 > - am I free Thursday afternoon
 > - draft a reply to Rich about the status deck
 > - did I log all my time last week
+> - make me a concept image of a pop-up coffee bar in a station
 >
 > One thing worth knowing: it will never send an email without showing you
 > first and asking. Same with timesheets, it shows you what it worked out and

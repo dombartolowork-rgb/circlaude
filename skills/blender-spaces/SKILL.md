@@ -80,6 +80,13 @@ empty space when there is a chance to get one.
 
 ## 4. Into Nano Banana
 
+Show the person the stills, then offer the next step rather than assuming it:
+- **Make it real:** paint the space's own surfaces, light and materials over the layout,
+  from their photos.
+- **Reimagine it:** keep the layout and camera, change the surfaces (a new floor, the
+  client's branding, an evening event look), from their description or mood images.
+- **Leave it:** the clean stills are enough, for a plan or a build conversation.
+
 Use the `image-generation` skill: the full-size still as the **first** `--ref`, two or
 three real photos of the space after it, and a prompt that says to keep image 1's camera
 and layout exactly. The outlines help the model read edges; if it starts drawing them,

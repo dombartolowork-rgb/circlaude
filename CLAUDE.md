@@ -65,8 +65,10 @@ writing preferences. Read it before drafting anything outbound, and follow it.
 
 **Never commit a token or an API key.** Orbit's token lives at
 `~/.circle/orbit_token.json`, outside this repo, on purpose.
-`TEAMWORK_API_KEY` comes from the environment, and the Gemini image key from
-`~/.circle/gemini_key` or `GEMINI_API_KEY`. Never print any of them.
+`TEAMWORK_API_KEY` comes from the environment, and the Vertex image key from
+`~/.circle/vertex_key` or `VERTEX_API_KEY`. Never print any of them. The image key is
+shared across Circle and people may paste it in chat, which is fine; what matters is
+that it never lands in this repo.
 
 ## Before saying a reply is owed, check Sent Items
 
