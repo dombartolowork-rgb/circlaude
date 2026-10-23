@@ -1,6 +1,6 @@
 ---
 name: blender-previz
-description: Build a grey 3D blockout of a real space in Blender from a floor plan and photos, animate a planned camera move, and render it as a guide video, either as previz in its own right or for an AI video model (Seedance) to paint the real place over a camera move we control. Use for venue fly-throughs, drone orbits, walkthroughs, product moves, or any shot where the camera must do exactly what was planned. Triggers on "blender", "blockout", "previz", "drone shot", "fly-through", "orbit", "360 shot", "camera move", "walkthrough", "recreate the venue".
+description: Build a grey 3D blockout of a real space in Blender from a floor plan and photos, animate a planned camera move, and render it as a guide video, either as previz in its own right or for an AI video model (Seedance) to paint the real place over a camera move we control. Use for venue fly-throughs, drone orbits, walkthroughs, product moves, or any shot where the camera must do exactly what was planned. Triggers on "blockout", "previz", "drone shot", "fly-through", "orbit", "360 shot", "camera move", "walkthrough", "guide video". For a model of a space and still renders (including layouts for Nano Banana), use blender-spaces instead.
 ---
 
 # Blender blockout previz

@@ -65,7 +65,8 @@ writing preferences. Read it before drafting anything outbound, and follow it.
 
 **Never commit a token or an API key.** Orbit's token lives at
 `~/.circle/orbit_token.json`, outside this repo, on purpose.
-`TEAMWORK_API_KEY` comes from the environment. Never print either.
+`TEAMWORK_API_KEY` comes from the environment, and the Gemini image key from
+`~/.circle/gemini_key` or `GEMINI_API_KEY`. Never print any of them.
 
 ## Before saying a reply is owed, check Sent Items
 
@@ -93,9 +94,9 @@ answers there. See `skills/circle-timesheet/SKILL.md`.
 | Path | What it is |
 |---|---|
 | `bin/circle` | the CLI entrypoint (`circle.cmd` for Windows) |
-| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `bins` (finds ffmpeg, yt-dlp, Blender) |
+| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `imagecmd` (Nano Banana), `bins` (finds ffmpeg, yt-dlp, Blender) |
 | `lib/circle/docxbuild.py` | writes .docx directly as OOXML, because converters flatten tables |
-| `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts; `tools/blender/` previz templates |
+| `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts; `tools/blender/` previz and space templates |
 | `hooks/` | the confirmation guard on sends, invites and shared-file writes |
 | `skills/` | the agency processes, as skills Claude loads on demand |
 | `commands/` | slash commands for the routines people run repeatedly |

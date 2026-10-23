@@ -7,6 +7,8 @@
     circle vid-1080 clip.mp4                        fit inside 1920x1080 (after an AI upscale, say)
     circle vid-pushend in.mp4 out.mp4 --ramp 1.5 --scale 1.28
                                                     digital push-in over the end, to match the next shot
+    circle vid-frames walk.mp4 --every 1            stills from a phone video of a space, for a 3D
+                                                    model or as Nano Banana references
 
 `--clip FILE [IN [OUT]]` takes seconds or m:ss. It is a separate option, not
 FILE:IN:OUT, because Windows paths already contain a colon.
@@ -264,6 +266,21 @@ def cmd_pushend(args):
     print(f"saved {args.out}  (push to {k}x over the last {args.ramp}s)")
 
 
+def cmd_frames(args):
+    """Stills from a video, one per --every seconds. Within each stretch ffmpeg's thumbnail
+    filter keeps the most representative frame, which skips most of the motion-blurred ones."""
+    src = args.file
+    info = probe(src)
+    batch = max(1, round((info["fps"] or 30) * args.every))
+    out = args.out or _default_out(src, "_frames", "")
+    os.makedirs(out, exist_ok=True)
+    stem = os.path.splitext(os.path.basename(src))[0]
+    _run([bins.ffmpeg(), "-y", "-v", "error", "-i", src, "-vf", f"thumbnail={batch}", "-fps_mode", "vfr",
+          "-q:v", "2", os.path.join(out, f"{stem}_%04d.jpg")])
+    n = len([f for f in os.listdir(out) if f.startswith(stem + "_") and f.endswith(".jpg")])
+    print(f"saved {n} stills to {out}  (one per {args.every:g}s of a {info['duration']:.0f}s video)")
+
+
 def register(sub):
     p = sub.add_parser("vid-probe", help="duration, size, frame rate and audio of video files")
     p.add_argument("file", nargs="+")
@@ -312,3 +329,10 @@ def register(sub):
     p.add_argument("--dx", type=float, default=0.0, help="drift right by this many pixels by the end")
     p.add_argument("--dy", type=float, default=0.0, help="drift down by this many pixels by the end")
     p.set_defaults(func=cmd_pushend)
+
+    p = sub.add_parser("vid-frames", help="stills from a video, e.g. a phone walk-round of a space")
+    p.add_argument("file")
+    p.add_argument("--every", type=float, default=1.0,
+                   help="seconds between stills (default 1; 0.5 for photogrammetry)")
+    p.add_argument("-o", "--out", help="folder (default: <video>_frames beside the video)")
+    p.set_defaults(func=cmd_frames)

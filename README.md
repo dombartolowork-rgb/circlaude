@@ -21,8 +21,12 @@ and taking a section out of a video too big to download.
 And production tools: downloading and clipping YouTube, TikTok and Instagram
 video (`yt-get`, `yt-clip`, `yt-find`), quick frame-exact edits with ffmpeg
 (`vid-cut`, `vid-join` with dissolves, `vid-sheet` contact sheets, `vid-1080`,
-`vid-pushend`), and Blender blockout previz for venue fly-throughs and drone
-orbits (`blender-run`, templates in `tools/blender/`). Uploading to Vimeo is not
+`vid-pushend`, `vid-frames`), Blender blockout previz for venue fly-throughs and
+drone orbits, Blender models of real spaces (measured, or imported from a phone
+scan) with still renders from chosen angles (`blender-run`, templates in
+`tools/blender/`), and image generation with Google's Nano Banana models on
+Circle's own key (`img-gen`), which can paint those stills into realistic
+pictures. Uploading to Vimeo is not
 in Orbit yet: the Vimeo key belongs behind the planned Orbit gateway, not on
 laptops.
 
@@ -46,7 +50,9 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **Python 3.12** - all users, with the py launcher
 - **ffmpeg** (for video and clips) - `circle yt-setup --ffmpeg` fetches it into
   `~/.circle/bin`, or IT push it
-- **Blender** (optional, for previz) - free from blender.org
+- **Blender** (optional, for previz and spaces) - free from blender.org
+- **Circle's Gemini API key** (optional, for image generation) - saved to
+  `~/.circle/gemini_key`, from whoever holds Circle's Google Cloud account
 
 IT push the installs. On a Mac, Python and Git are usually already present;
 install ffmpeg separately.
