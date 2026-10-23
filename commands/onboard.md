@@ -41,6 +41,10 @@ missing, tell them:
 Then stop. If Windows reports a version but things still fail later, it is
 probably the Microsoft Store placeholder rather than the real thing.
 
+Only if they say they will use the video, YouTube or Blender tools: run
+`circle yt-setup` (add `--ffmpeg` on Windows) to install the downloaders, and
+`circle blender-find` to check Blender. Skip this for everyone else.
+
 **3. Check Claude can see their mail and calendar.**
 
 That comes from the Microsoft 365 connector in their Claude account, not from

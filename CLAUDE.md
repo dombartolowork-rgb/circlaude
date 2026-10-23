@@ -93,9 +93,9 @@ answers there. See `skills/circle-timesheet/SKILL.md`.
 | Path | What it is |
 |---|---|
 | `bin/circle` | the CLI entrypoint (`circle.cmd` for Windows) |
-| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild` |
+| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `bins` (finds ffmpeg, yt-dlp, Blender) |
 | `lib/circle/docxbuild.py` | writes .docx directly as OOXML, because converters flatten tables |
-| `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts |
+| `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts; `tools/blender/` previz templates |
 | `hooks/` | the confirmation guard on sends, invites and shared-file writes |
 | `skills/` | the agency processes, as skills Claude loads on demand |
 | `commands/` | slash commands for the routines people run repeatedly |

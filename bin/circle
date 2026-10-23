@@ -9,6 +9,9 @@ Claude. This command covers what that connector cannot:
   circle tracker find SUB133         the Project Tracker: codes, rows, next free code
   circle handover-render plan.json   leave handover: build / upload the Word document
   circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
+  circle yt-get <url>                YouTube / TikTok download, yt-clip for one section (yt-setup once)
+  circle vid-cut clip.mp4 --from 4   video: probe / cut / join / sheet / 1080 / pushend (needs ffmpeg)
+  circle blender-run script.py -- out  Blender previz, headless; img-crop for signage decals
 
 Run `circle <command> --help` for any command's options.
 Pure Python 3 stdlib: no pip install needed.
@@ -20,7 +23,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
-from circle import graph, handovercmd, teamwork, trackercmd  # noqa: E402
+from circle import (blendercmd, graph, handovercmd, teamwork, trackercmd,  # noqa: E402
+                    videocmd, ytcmd)
 
 
 def cmd_login(args):
@@ -61,7 +65,7 @@ def cmd_whoami(args):
 def main():
     parser = argparse.ArgumentParser(
         prog="circle",
-        description="The Orbit command line: Project Tracker, SharePoint files, handover, Teamwork.",
+        description="The Orbit command line: Project Tracker, SharePoint files, handover, Teamwork, video and Blender.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__.split("\n", 2)[2],
     )
@@ -73,6 +77,9 @@ def main():
     trackercmd.register(sub)
     teamwork.register(sub)
     handovercmd.register(sub)
+    ytcmd.register(sub)
+    videocmd.register(sub)
+    blendercmd.register(sub)
 
     args = parser.parse_args()
     try:

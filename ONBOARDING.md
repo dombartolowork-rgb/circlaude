@@ -15,6 +15,7 @@ IT set these up for you:
 
 1. **The Claude desktop app**, signed in with your Circle Claude account
 2. **Git** and **Python**, which Orbit needs in the background
+   (and **ffmpeg** and **Blender** if you will use the video or previz tools)
 3. **Access to the Microsoft 365 connector** in Claude, which IT switch on
    person by person
 

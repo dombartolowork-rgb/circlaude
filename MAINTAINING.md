@@ -20,6 +20,13 @@ points at a skill and fixes the order of steps.
 `trackercmd` and `teamwork` do. Python 3 stdlib only: no `pip install`, ever,
 because the agency laptops are locked down.
 
+**Outside programs** (ffmpeg, yt-dlp, Deno, Blender) are shelled out to, never
+vendored. Find them through `lib/circle/bins.py`, which looks in `~/.circle/bin`,
+then PATH, then the usual install folders, and gives a fix-it message when one is
+missing. `circle yt-setup` downloads yt-dlp and Deno (and ffmpeg on Windows) and
+checks each against its published checksum. Never add Mac-only helpers (Swift,
+`sips`, `xattr` outside a Mac check): Orbit's users are on Windows.
+
 After any change: `claude plugin validate .`
 
 ## Shipping an update

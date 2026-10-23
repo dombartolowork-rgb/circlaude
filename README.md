@@ -18,6 +18,14 @@ right order, the weekly status deck, the annual leave handover, handling
 client transfers and shared SharePoint files safely, SwissTransfer downloads,
 and taking a section out of a video too big to download.
 
+And production tools: downloading and clipping YouTube, TikTok and Instagram
+video (`yt-get`, `yt-clip`, `yt-find`), quick frame-exact edits with ffmpeg
+(`vid-cut`, `vid-join` with dissolves, `vid-sheet` contact sheets, `vid-1080`,
+`vid-pushend`), and Blender blockout previz for venue fly-throughs and drone
+orbits (`blender-run`, templates in `tools/blender/`). Uploading to Vimeo is not
+in Orbit yet: the Vimeo key belongs behind the planned Orbit gateway, not on
+laptops.
+
 **Sending is gated.** Orbit ships a hook that makes every send, forward,
 meeting invite and shared-file change ask you for confirmation, whatever
 permission mode Claude Code is in. Nothing leaves your account unreviewed.
@@ -36,8 +44,12 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
   to it by IT
 - **Git for Windows** - Orbit's instructions run through Git's shell
 - **Python 3.12** - all users, with the py launcher
+- **ffmpeg** (for video and clips) - `circle yt-setup --ffmpeg` fetches it into
+  `~/.circle/bin`, or IT push it
+- **Blender** (optional, for previz) - free from blender.org
 
-IT push the installs. On a Mac, Python and Git are usually already present.
+IT push the installs. On a Mac, Python and Git are usually already present;
+install ffmpeg separately.
 
 ## Setup
 
