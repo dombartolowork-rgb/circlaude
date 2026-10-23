@@ -64,8 +64,13 @@ is a branded photo wall; the dark platform is a stage with a screen. No outlines
   --ref space_entrance.png --ref room1.jpg --ref room2.jpg --aspect 16:9 -o entrance_v1.png
 ```
 
-This is a first recipe, not yet proven on a real job: update this section with what
-works. Things to try when it goes wrong:
+Tested 23 Oct 2026 on a garden office from a 35s phone walk-round: Nano Banana 2 at 2K
+held the camera, the layout and every object's position on all three stills, and pulled
+the real colours and materials from two video frames per shot. What made it work: the
+layout first, two frames that show the same view, and a prompt that names each object's
+real material. A "reimagine" pass with no photo references also kept the layout, but
+put a requested accent wall on the wrong wall: name walls by what is on them ("the wall
+behind the sofa"), not "end wall". Things to try when it goes wrong:
 - **It moved things or changed the camera:** fewer photo references, and repeat "keep the
   exact layout of image 1" at the end of the prompt.
 - **It drew the outlines:** render the still without them (`LINES = False`, or
