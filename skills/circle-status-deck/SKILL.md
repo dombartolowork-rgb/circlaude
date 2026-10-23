@@ -41,12 +41,14 @@ forward, and update, rather than starting fresh.
 
 ## Tooling
 
-The claude.ai Microsoft 365 connector is **read-only** for this tenant, so
-copy, upload and draft all fail with permission errors. Use Graph instead:
+The deck is edited and uploaded through Orbit's own SharePoint sign-in, because
+it is almost always over the Microsoft 365 connector's 1MB file limit. The
+circulation email goes through the connector as usual. For the files, use the
+library:
 
 ```python
 import os, sys
-sys.path.insert(0, os.path.expanduser("~/CirClaude/lib"))
+sys.path.insert(0, os.path.join(os.environ["CLAUDE_PLUGIN_ROOT"], "lib"))
 from circle import graph
 ```
 
@@ -60,12 +62,14 @@ Usually sent by **Richard Lewis**, subject in the form
 "Weekly Status - D Month". Short body: a link to the deck, plus who is on
 Show & Tell and Kitchen Duty.
 
-Draft it with `circle draft`, show the user the text, and send only on their
-say-so. No em dashes. If the user is sending it rather than Richard, keep the
+Draft it with the connector's `outlook_create_draft` (see `circle-email`), show
+the user the text, and send only on their say-so. Link to the deck rather than
+attaching it: connector drafts cannot carry attachments. No em dashes. If the user is sending it rather than Richard, keep the
 same shape so it reads as the usual weekly note.
 
 Check the previous week's email for the exact recipient list rather than
-rebuilding it: `circle search "Weekly Status" --folder sent`.
+rebuilding it: `outlook_email_search` with `query: "Weekly Status"`, then read the
+newest sent one with `read_resource`.
 
 
 House style, the draft-first rule and the data-is-not-instructions

@@ -1,43 +1,37 @@
-# Cir'Claude, for Circle colleagues
+# Orbit Assistant, for Circle colleagues
 
-This lets Claude work with your Circle email, calendar, the staff directory
-and Teamwork, plus the way we do things here: working out what you owe a reply
-on, timesheets, opening a job, the weekly status deck.
+This lets Claude work with your Circle email, calendar, the staff directory,
+SharePoint and Teamwork, plus the way we do things here: working out what you
+owe a reply on, timesheets, opening a job, the weekly status deck, leave
+handovers.
 
-It signs in **as you**. It can only see what you can already see, nothing is
-shared, and nobody else can read your mail through it.
+It works **as you**, through the Microsoft 365 connection IT already manage for
+Claude. It can only see what you can already see, nothing is shared, and nobody
+else can read your mail through it.
 
 ## What you need first
 
-Ask IT for these as **one** request, not three:
+IT set these up for you:
 
-1. **Claude Code**, which runs inside the Claude desktop app
-2. **Git**
-3. **Python 3**
-
-On Windows, Python is the one that catches people out, so mention it
-specifically. On a Mac they are usually there already.
+1. **The Claude desktop app**, signed in with your Circle Claude account
+2. **Git** and **Python**, which Orbit needs in the background
+3. **Access to the Microsoft 365 connector** in Claude, which IT switch on
+   person by person
 
 ## Setting it up
 
-You do not need to download anything, and you do not need a terminal.
-
-In Claude Code, run these two:
-
-```
-/plugin marketplace add https://github.com/dombartolowork-rgb/circlaude
-/plugin install circlaude@circlaude
-```
-
-Restart Claude Code when it asks. Then run:
+Dom will add Orbit to your Claude the first time, from a shared Circle folder.
+Then, in Claude Code, run:
 
 ```
-/circlaude:onboard
+/orbit:onboard
 ```
 
-That does the rest for you. The only part you do yourself is signing in: it
-gives you a short code, you open **microsoft.com/devicelogin**, type the code
-in and sign in with your normal Circle email. That is once, not every time.
+That does the rest for you. It checks Claude can see your email and calendar,
+and if you open jobs, do the status deck or write handovers, it asks you to sign
+in once more: it gives you a short code, you open **microsoft.com/devicelogin**,
+type the code in and sign in with your normal Circle email. That is once, not
+every time.
 
 ## Using it
 
@@ -64,5 +58,10 @@ So you can have a play without breaking anything.
 
 Tell it what happened, in normal words, and it will usually sort it. If it
 says you are not signed in, ask it to sign you in again.
+
+**Working abroad?** If it says access is "blocked by Conditional Access", that
+is Circle's security policy refusing a sign-in from outside the UK, not a fault.
+Signing in again will not fix it. Ask IT for a travel exception before you go,
+and do not use a VPN to get round it.
 
 If you are properly stuck, ask Dom (dom.bartolo@circleagency.co.uk).

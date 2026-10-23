@@ -1,5 +1,5 @@
 ---
-description: First-run setup - get Cir'Claude connected to your Circle account
+description: First-run setup - get Orbit connected to your Circle account
 ---
 
 You are setting someone up who may never have used a tool like this. Assume
@@ -34,20 +34,45 @@ Do not mention any of this to them.
 Run `py -3 --version` on Windows, `python3 --version` on a Mac. If it is
 missing, tell them:
 
-> You need one thing installed first, called Python. IT can do it, or you can
-> run this yourself if you have the Windows store thing: `winget install
-> Python.Python.3.12`. Then come back and we will pick up where we left off.
+> You need one thing installed first, called Python. IT should have put it on
+> your laptop, so it is worth asking them. Then come back and we will pick up
+> where we left off.
 
 Then stop. If Windows reports a version but things still fail later, it is
 probably the Microsoft Store placeholder rather than the real thing.
 
-**3. Sign them in to Microsoft.**
+**3. Check Claude can see their mail and calendar.**
 
-Say what is coming first:
+That comes from the Microsoft 365 connector in their Claude account, not from
+anything installed here. Quietly call `get_me`, then a small inbox search and
+today's calendar through it. Do not show them the raw output. Tell them what you
+can see, in a sentence:
 
-> Right, I need to connect this to your Circle account. I will get you a short
-> code, you type it into a Microsoft page, and that is the only bit you have
-> to do. It signs in as you, so it can only ever see what you can already see.
+> I can see your inbox and your calendar. You have four unread and a Costa
+> call at two.
+
+That is the proof it works. If the connector tools are not there at all:
+
+> Claude is not connected to your Circle email yet. Open Claude's settings, go
+> to Connectors, and switch on Microsoft 365. It will ask you to sign in with
+> your normal Circle email.
+
+If signing in to it says they are blocked or not assigned, that is IT's side:
+they add people to it one by one. Say Dom can sort it, and stop there.
+
+**4. The SharePoint sign-in, only if they need it.**
+
+Ask first:
+
+> Do you ever open new jobs, do the weekly status deck, or write a handover
+> before leave? Those need one more quick sign-in. If not, we can skip it.
+
+If they say no, skip to step 5. If yes, say what is coming:
+
+> This one lets me read the Project Tracker and save files to SharePoint for
+> you. I will get you a short code, you type it into a Microsoft page, and that
+> is the only bit you have to do. It signs in as you, so it can only ever see
+> what you can already see.
 
 Run `circle login` **in the background** and read its output. It prints a
 short code and a URL. Give them both, clearly:
@@ -58,23 +83,10 @@ short code and a URL. Give them both, clearly:
 
 While they do that the sign-in is waiting in the background and will pick
 itself up. When they say they are done, run `circle whoami` and read back the
-address it reports:
+address it reports. Then check it works with `circle tracker sheets`, and tell
+them in a sentence ("I can see the Project Tracker.").
 
-> That worked. It is signed in as craig.macfarlane@circleagency.co.uk, and it
-> will stay signed in, so you will not have to do that again.
-
-If it did not take, the code may have expired. Say so lightly and get a new
-one.
-
-**4. Check it can actually see things.**
-
-Run `circle inbox --limit 5` and `circle agenda`. Do not show them the raw
-output. Tell them what you can see, in a sentence:
-
-> I can see your inbox and your calendar. You have four unread and a Costa
-> call at two.
-
-That is the proof it works.
+If it did not take, the code may have expired. Say so lightly and get a new one.
 
 **5. Ask how they log time.** Only if they want time logging at all. If they
 are just trying this out, skip it and say they can set it up later.

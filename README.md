@@ -1,59 +1,61 @@
-# Cir'Claude
+# Orbit Assistant
 
 The Circle Agency work assistant, as one Claude Code plugin.
 
-One CLI, `circle`, covering:
+Two halves:
 
-- **Outlook** - read, search, thread, draft, threaded replies, gated sending
-- **Calendar** - agenda, colleague free/busy, sending invites including Teams
-- **Directory** - look up a colleague's real address, check who is out of office
-- **Teamwork** - audit what time is logged, find project codes, log time
-  (dry run by default)
+- **The Microsoft 365 connector in Claude** does mail, calendar, people and
+  Teams: reading, searching, threaded reply drafts, availability, invites. It is
+  the organisation's connector, managed and assigned by IT, so Orbit adds no
+  new route into anyone's mailbox.
+- **A small `circle` command** does what that connector cannot: read and edit
+  the Project Tracker, upload large files to SharePoint, build and file the
+  leave handover, and Teamwork timesheets with a real dry run.
 
 Plus skills that carry the agency's own processes: inbox triage that
 reconciles against Sent Items, timesheet logging, opening a new job in the
-right order, the weekly status deck, and SwissTransfer downloads.
+right order, the weekly status deck, the annual leave handover, handling
+client transfers and shared SharePoint files safely, SwissTransfer downloads,
+and taking a section out of a video too big to download.
 
-**Sending is gated.** `circle send`, `reply` and `reply-all` save to Drafts
-unless `--send-now` is passed, and the plugin ships a hook that makes every
-actual send ask you for confirmation, whatever permission mode Claude Code is
-in. Nothing leaves your account unreviewed.
+**Sending is gated.** Orbit ships a hook that makes every send, forward,
+meeting invite and shared-file change ask you for confirmation, whatever
+permission mode Claude Code is in. Nothing leaves your account unreviewed.
 
-**Your credentials stay yours.** Sign-in is a one-time device code against
-your own Circle Microsoft account; the token is stored at
-`~/.circle/graph_token.json`, outside this folder. Teamwork uses your own API
-key from the environment. Nothing is shared and nobody can read your mail
-through this.
+**Your credentials stay yours.** The connector signs in as you inside Claude.
+Orbit's own sign-in, used only for SharePoint files, is a one-time device code;
+its token is stored at `~/.circle/orbit_token.json`, outside this folder.
+Which Entra app it uses is set in `~/.circle/config.json` (`client_id`,
+`tenant`), falling back to Microsoft's Office client until Circle's own app
+registration exists. Teamwork uses your own API key or the Teamwork connector.
 
 ## Requirements (Windows)
 
-- **Claude Code Desktop**
-- **Git** - Claude Code Desktop needs it on Windows
-- **Python 3** - `winget install Python.Python.3.12` (per-user, no admin)
+- **Claude Code Desktop**, signed in with a Circle Claude Team seat
+- **The Microsoft 365 connector** switched on in Claude, and the person assigned
+  to it by IT
+- **Git for Windows** - Orbit's instructions run through Git's shell
+- **Python 3.12** - all users, with the py launcher
 
-Raise all three with IT as one request. On a Mac, Python and Git are usually
-already present.
+IT push the installs. On a Mac, Python and Git are usually already present.
 
 ## Setup
 
-See `ONBOARDING.md` for the walkthrough, or in Claude Code just run
-`/circlaude:onboard` and it will do the whole thing with you.
+See `ONBOARDING.md` for the walkthrough, or in Claude Code run `/orbit:onboard`
+and it will do the whole thing with you.
 
-The short version:
-
-```
-git clone https://github.com/dombartolowork-rgb/circlaude.git %USERPROFILE%\CirClaude
-cd %USERPROFILE%\CirClaude
-bin\circle login
-bin\circle whoami
-```
-
-Then in Claude Code:
+Orbit installs from a folder, so it does not need GitHub. The plan is a
+SharePoint library synced to each laptop by OneDrive. In Claude Code:
 
 ```
-/plugin marketplace add https://github.com/dombartolowork-rgb/circlaude
-/plugin install circlaude@circlaude
+/plugin marketplace add "<path to the synced Orbit folder>"
+/plugin install orbit@orbit
 ```
+
+Updates: publish a new version (bump `version` in both `.claude-plugin` files)
+into the library; users run `/plugin marketplace update orbit` then
+`/plugin update orbit@orbit` and restart. Verified 30 Sep 2026 against a plain
+folder.
 
 ## Notes
 

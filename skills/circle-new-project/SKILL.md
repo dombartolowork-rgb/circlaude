@@ -23,9 +23,15 @@ reality. Trusting it once meant picking a code that was already taken, which
 forced a rename after the Teamwork project existed. The order is fixed so
 that cannot happen again.
 
-1. **Project Tracker** - read the client sheet, find the first pre-numbered
-   row with an **empty description**. That code is the real sequential job
-   code. Confirm it with the user before creating anything.
+1. **Project Tracker** - `circle tracker next <Client>` finds the first
+   pre-numbered row with an **empty description**. That code is the real sequential job
+   code. **Then search Teamwork for that same code.** If either system already
+   uses it, stop and ask. Confirm it with the user before creating anything.
+   The reverse lag has happened too: a code with an empty tracker row already
+   had a Teamwork project someone created and never wrote into the tracker.
+   Minutes later client services filled the same row in for a different job,
+   so one code pointed at two jobs. The tracker is edited live while you read
+   it, so re-read it just before acting on a gap.
 2. **Teamwork project** - create it with that confirmed code.
 3. **SharePoint campaign folder** - copy the template, named with that code.
 4. **Fill in the tracker row** details.
@@ -53,12 +59,14 @@ The template has 13 numbered subfolders. Budgets and quotes go in
 
 ## Excel writes need a session
 
-The claude.ai Microsoft 365 connector is **read-only** for this tenant, so
-writes go through Graph. Use the library:
+The tracker is read and written through Orbit's own SharePoint sign-in: the
+Microsoft 365 connector cannot read one sheet of it or change a cell. To find the
+next code, `circle tracker next <Client>`; to see a sheet, `circle tracker sheet
+<Client>`. For writes, use the library:
 
 ```python
 import os, sys
-sys.path.insert(0, os.path.expanduser("~/CirClaude/lib"))
+sys.path.insert(0, os.path.join(os.environ["CLAUDE_PLUGIN_ROOT"], "lib"))
 from circle import graph
 status, headers, data = graph.call("GET", "/me/drive/root")
 ```

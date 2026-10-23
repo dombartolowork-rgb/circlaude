@@ -17,7 +17,7 @@ points at a skill and fixes the order of steps.
 **A CLI subcommand** - the only one that is real code. A module in
 `lib/circle/<name>cmd.py` exposing `register(sub)`, plus one line in
 `bin/circle`. Only needed when it has to talk to an API directly, the way
-`mailcmd` and `teamwork` do. Python 3 stdlib only: no `pip install`, ever,
+`trackercmd` and `teamwork` do. Python 3 stdlib only: no `pip install`, ever,
 because the agency laptops are locked down.
 
 After any change: `claude plugin validate .`
@@ -28,7 +28,7 @@ The mechanic that decides everything: **installing copies the plugin into a
 version-pinned folder**, e.g.
 
 ```
-~/.claude/plugins/cache/circlaude/circlaude/0.2.0
+~/.claude/plugins/cache/orbit/orbit/0.2.0
 ```
 
 Note the version in the path. Editing this repo does nothing to anyone's
@@ -42,9 +42,9 @@ So a release is:
    `.claude-plugin/marketplace.json`. They must agree, `claude plugin tag`
    validates that.
 3. `claude plugin validate .`
-4. Commit, then `claude plugin tag --push` to stamp `circlaude--v<version>`
+4. Commit, then `claude plugin tag --push` to stamp `orbit--v<version>`
    so there is a known-good release to roll back to.
-5. Users run `/plugin update circlaude` and restart.
+5. Users run `/plugin update orbit` and restart.
 
 Semantic versioning is enough: patch for a fix, minor for a new skill or
 command, major if someone's existing habit breaks.
@@ -55,7 +55,7 @@ While it ships as a zip or a local folder, every update means re-zipping,
 re-uploading, re-sharing the link, and each person removing and re-adding the
 marketplace. Versions drift and there is no way to know who is running what.
 
-Hosted on git, you push and they run `/plugin update circlaude`. That is the
+Hosted on git, you push and they run `/plugin update orbit`. That is the
 whole loop. It also gives a dated change history, which is the right answer
 to "what does this tool do with our mail" when the AI policy question comes
 up. GitHub or Azure DevOps, the plugin does not care.
@@ -64,7 +64,7 @@ up. GitHub or Azure DevOps, the plugin does not care.
 
 There is a second, older marketplace named `circle-agency` at
 `~/Documents/Subway/circle-tools`, holding `awd`, `subway-ingredients` and
-`timesheet`. Cir'Claude should appear there too, as the agency's one
+`timesheet`. Orbit should appear there too, as the agency's one
 catalogue.
 
 It cannot be wired up until this repo is hosted. A marketplace entry's
@@ -75,9 +75,9 @@ dereferenced at install. So the moment there is a remote, add this entry to
 
 ```json
 {
-  "name": "circlaude",
-  "source": { "source": "github", "repo": "dombartolowork-rgb/circlaude" },
-  "description": "Cir'Claude, the Circle Agency work assistant.",
+  "name": "orbit",
+  "source": { "source": "github", "repo": "dombartolowork-rgb/orbit" },
+  "description": "Orbit Assistant, Circle Agency's work assistant.",
   "version": "0.2.0",
   "category": "productivity",
   "strict": false

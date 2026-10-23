@@ -2,22 +2,23 @@
 
 ## Microsoft 365 (Outlook, SharePoint, Teams)
 
-Access is via **Microsoft Graph**, using device-code auth against Microsoft's
-first-party Office client `d3590ed6-52b3-4102-aeff-aad2292ab01c`. That client
-is pre-consented on Circle's tenant, so no Azure app registration and no
-admin approval are needed. (The "Microsoft Graph Command Line Tools" client
-is blocked on this tenant, which is why the Office one is used.)
+**Mail, calendar, people and Teams: the Microsoft 365 connector in Claude.**
+Checked 30 Sep 2026: it holds read and write on mail (drafts, and Mail.Send),
+calendars and files, plus Teams chat and meeting transcripts, and IT assign it
+person by person. Its limits: no single-sheet read of a big workbook (it
+truncates), no Excel cell writes, uploads capped at 1MB, and drafts cannot carry
+attachments.
 
-Token at `~/.circle/graph_token.json` (chmod 600), refreshed silently. Sign in
-once with `circle login`. Check scopes with `circle whoami`.
-
-**The claude.ai Microsoft 365 MCP connector is read-only** on this tenant. It
-reads fine, but every **write** (copy, upload, draft, create) must go through
-Graph, via the library:
+**SharePoint work beyond those limits: Orbit's own sign-in.** Device code, via
+the Entra app set in `~/.circle/config.json`, falling back to Microsoft's Office
+client `d3590ed6-52b3-4102-aeff-aad2292ab01c` until Circle's own app exists (the
+Office client ignores the narrow scope request and returns its full set). Token
+at `~/.circle/orbit_token.json`, refreshed silently. Sign in once with
+`circle login`; check with `circle whoami`. Use it through the library:
 
 ```python
 import os, sys
-sys.path.insert(0, os.path.expanduser("~/CirClaude/lib"))
+sys.path.insert(0, os.path.join(os.environ["CLAUDE_PLUGIN_ROOT"], "lib"))
 from circle import graph
 status, headers, data = graph.call("GET", "/me/drive/root")
 ```

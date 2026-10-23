@@ -103,7 +103,7 @@ business development.
 
    ```python
    import os, sys
-   sys.path.insert(0, os.path.expanduser("~/CirClaude/lib"))
+   sys.path.insert(0, os.path.join(os.environ["CLAUDE_PLUGIN_ROOT"], "lib"))
    from circle import graph
    DRIVE = "b!btnAx0EMLUaFyzSCxuDrhOoZ9iBVLqhMoaIg-ctFYgk8FFSkIzgKRZsYdgK9oiXv"
    ITEM  = "01LHYCQA575R6LB4GBZVI2EFJVZ7YDCTJB"

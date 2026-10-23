@@ -1,15 +1,26 @@
 #!/usr/bin/env python3
 """Microsoft Graph core: token storage, silent refresh, and API calls.
 
-Device-code flow against Microsoft's first-party Office client, which is
-pre-consented on the Circle tenant, so no Azure app registration and no admin
-approval is needed. (The "Microsoft Graph Command Line Tools" client is blocked
-on this tenant, which is why we use the Office one.)
+Orbit's own sign-in is deliberately narrow. Mail, calendar, people and Teams all
+go through the organisation's Microsoft 365 connector inside Claude, which IT
+already manages. This sign-in exists only for the SharePoint work the connector
+cannot do: reading and editing the Project Tracker workbook (83 sheets, edited
+live, over the connector's 1MB file limit) and uploading large files such as the
+status deck. So it asks for file and site scopes only, never mail.
+
+Which Entra app it signs in through is configuration, not code:
+
+  ~/.circle/config.json   {"client_id": "...", "tenant": "..."}
+  or CIRCLE_CLIENT_ID / CIRCLE_TENANT in the environment
+
+With neither set it falls back to Microsoft's first-party Office client, which
+is pre-consented on the Circle tenant. That is a stopgap until IT issues a
+Circle-owned app registration, and it is not narrow: see SCOPE below.
 
 Pure Python 3 stdlib. No pip install, so it runs on a locked-down Windows
 laptop as long as Python 3 itself is present.
 
-The token lives OUTSIDE this repo, at ~/.circle/graph_token.json, so it can
+The token lives OUTSIDE this repo, at ~/.circle/orbit_token.json, so it can
 never be committed or shared by accident. Override with CIRCLE_TOKEN_FILE.
 """
 import base64
@@ -20,14 +31,41 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-CLIENT_ID = "d3590ed6-52b3-4102-aeff-aad2292ab01c"  # Microsoft Office, first-party, pre-consented
-TENANT = "organizations"
-SCOPE = "https://graph.microsoft.com/.default offline_access"
+CONFIG_DIR = os.path.expanduser("~/.circle")
+CONFIG_FILE = os.path.join(CONFIG_DIR, "config.json")
+
+OFFICE_CLIENT_ID = "d3590ed6-52b3-4102-aeff-aad2292ab01c"  # Microsoft Office, first-party
+
+
+def _config():
+    try:
+        with open(CONFIG_FILE, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+_CFG = _config()
+CLIENT_ID = os.environ.get("CIRCLE_CLIENT_ID") or _CFG.get("client_id") or OFFICE_CLIENT_ID
+TENANT = os.environ.get("CIRCLE_TENANT") or _CFG.get("tenant") or "organizations"
+
+# Files and sites only. With a Circle-owned app registration this is exactly
+# what the token carries. The fallback Office client cannot take named scopes:
+# as a first-party app it may only request what Microsoft has preauthorised
+# for it, and asking for these by name fails at sign-in with AADSTS65002
+# (hit on a Windows install, 2 Oct 2026). So on the Office client we ask for
+# .default, its whole pre-consented set, mail included. Orbit never calls mail
+# through this sign-in either way, but only the Circle-owned app makes that a
+# guarantee rather than a habit.
+NARROW_SCOPE = ("https://graph.microsoft.com/Files.ReadWrite.All "
+                "https://graph.microsoft.com/Sites.Read.All "
+                "https://graph.microsoft.com/User.Read offline_access")
+SCOPE = ("https://graph.microsoft.com/.default offline_access"
+         if CLIENT_ID == OFFICE_CLIENT_ID else NARROW_SCOPE)
 AUTH_BASE = f"https://login.microsoftonline.com/{TENANT}/oauth2/v2.0"
 GRAPH = "https://graph.microsoft.com/v1.0"
 
-CONFIG_DIR = os.path.expanduser("~/.circle")
-TOKEN_FILE = os.environ.get("CIRCLE_TOKEN_FILE") or os.path.join(CONFIG_DIR, "graph_token.json")
+TOKEN_FILE = os.environ.get("CIRCLE_TOKEN_FILE") or os.path.join(CONFIG_DIR, "orbit_token.json")
 
 class AuthError(Exception):
     """No usable token: the caller should tell the user to run `circle login`."""
@@ -159,9 +197,13 @@ def call_retry(method, path, body=None, tries=4, **kw):
     return status, hdrs, data
 
 
-def paged(path, limit=None):
-    """Yield items across @odata.nextLink pages, up to `limit` items."""
-    status, _, data = call("GET", path)
+def paged(path, limit=None, headers=None):
+    """Yield items across @odata.nextLink pages, up to `limit` items.
+
+    `headers` is carried onto every page, not just the first: a Prefer timezone
+    header dropped on page two silently mixes UTC rows into local ones.
+    """
+    status, _, data = call("GET", path, headers=headers)
     if status != 200:
         raise RuntimeError(f"Graph GET {path} failed ({status}): {data}")
     seen = 0
@@ -174,7 +216,7 @@ def paged(path, limit=None):
         nxt = data.get("@odata.nextLink")
         if not nxt:
             return
-        status, _, data = call("GET", None, full_url=nxt)
+        status, _, data = call("GET", None, full_url=nxt, headers=headers)
         if status != 200:
             return
 

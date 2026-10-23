@@ -1,22 +1,13 @@
 ---
 description: Morning brief - today's calendar, unread mail, replies owed
 ---
-## Invoking the CLI
+Give the user a tight morning brief, using the Microsoft 365 connector (see the
+`circle-email` skill). Report, do not dump raw output.
 
-Examples below write `circle` for readability. **Run it as
-`"$CLAUDE_PLUGIN_ROOT/bin/circle"`** unless `circle` is already on PATH: when
-this is installed as a plugin there is no `circle` on PATH and no repo folder
-in the home directory, so a bare `circle` fails with "command not found".
-Check with `command -v circle` once and use whichever works for the rest of
-the session.
-
-Give the user a tight morning brief. Run these, then report, do not dump raw
-output.
-
-```bash
-circle agenda --attendees
-circle inbox --limit 25 --preview
-```
+- Today's calendar: `outlook_calendar_search` with `query: "*"` from the start to
+  the end of today.
+- Mail: `outlook_email_search` with `folderName: "Inbox"`, `order: "newest"`,
+  `limit: 25`.
 
 Report in this order, and keep it short:
 
@@ -24,9 +15,8 @@ Report in this order, and keep it short:
    prep, and anything that clashes.
 2. **Needs a reply** - only threads they genuinely owe. Ignore newsletters,
    automatic replies and calendar notices. Where a thread looks unanswered,
-   check `circle thread <id>` before listing it, because people reply from
-   their phones. See the `circle-inbox-triage` rule: reconcile against Sent
-   Items.
+   check what they sent that person first, because people reply from their
+   phones. See the `circle-inbox-triage` rule.
 3. **Deadlines and commitments** visible in the mail, with dates.
 
 End with the two or three things that actually matter today. No filler, no

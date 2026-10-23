@@ -44,11 +44,11 @@ double-logs and you can see the real gaps inside each day.
 circle tw-logged --week 2026-07-13     # sums per day, flags shortfalls
 ```
 
-**2. Read the calendar for the period.**
-
-```bash
-circle agenda --week 2026-07-13 --attendees
-```
+**2. Read the calendar for the period** through the Microsoft 365 connector:
+`outlook_calendar_search` with `query: "*"` and the week's start and end, paging
+with `offset`. Times come back with their time zone; quote them as given. What
+they sent that week (`outlook_email_search` with `sender` set to their own
+address) fills gaps the calendar does not show.
 
 **3. Sort events into billable client work vs internal**, using the rules
 below and their policy file.

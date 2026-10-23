@@ -17,7 +17,8 @@ Work in this order and do not skip step 1.
 
 1. `circle tw-logged --week <period>` to see what is already logged and where
    the real gaps inside each day are.
-2. `circle agenda --week <period> --attendees` for the calendar.
+2. The calendar for the period, through the Microsoft 365 connector
+   (`outlook_calendar_search`, `query: "*"`, the period's start and end).
 3. Sort events billable vs internal using the skill's rules and the user's own
    conventions in `~/.circle/timesheet-policy.md` (ask and offer to save them
    if that file does not exist).

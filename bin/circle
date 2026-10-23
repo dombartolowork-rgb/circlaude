@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
-"""circle - one command line for Circle Agency work.
+"""circle - the Orbit command line, for the SharePoint work the connector cannot do.
 
-  circle login                       sign in to Microsoft (once)
+Mail, calendar, people and Teams go through the Microsoft 365 connector inside
+Claude. This command covers what that connector cannot:
+
+  circle login                       sign in to Microsoft, files and sites only (once)
   circle whoami                      who am I, and what can I do
-  circle inbox --unread              mail: inbox / sent / search / read / thread
-  circle draft --to x --subject y    mail: draft / send / reply / reply-all
-  circle agenda --week               calendar: agenda / free / invite
-  circle who ella                    people: directory lookup / out-of-office
+  circle tracker find SUB133         the Project Tracker: codes, rows, next free code
+  circle handover-render plan.json   leave handover: build / upload the Word document
   circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
 
 Run `circle <command> --help` for any command's options.
 Pure Python 3 stdlib: no pip install needed.
-
-Sending is gated: `send`, `reply` and `reply-all` save to Drafts unless
---send-now is passed, so nothing leaves the account unreviewed.
 """
 import argparse
 import os
@@ -22,7 +20,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
-from circle import calcmd, graph, mailcmd, peoplecmd, teamwork  # noqa: E402
+from circle import graph, handovercmd, teamwork, trackercmd  # noqa: E402
 
 
 def cmd_login(args):
@@ -32,15 +30,20 @@ def cmd_login(args):
 
 def cmd_whoami(args):
     """Show both identities, so it is obvious what is wired up and what is not."""
-    print("Microsoft Graph")
+    print("Microsoft (Orbit's own sign-in, for SharePoint files only)")
     try:
         upn, scp = graph.whoami()
         print("  signed in as:", upn)
         print("  token file:  ", graph.TOKEN_FILE)
+        print("  app:         ", "Circle app registration" if graph.CLIENT_ID != graph.OFFICE_CLIENT_ID
+              else "Microsoft Office (stopgap until IT issue Circle's own app)")
         scopes = sorted(set(scp.split()))
         print("  scopes:      ", ", ".join(scopes) if scopes else "(none)")
     except graph.AuthError as e:
         print("  NOT SIGNED IN:", e)
+
+    print("\nMail, calendar and people come from the Microsoft 365 connector in Claude,")
+    print("not from here. If Claude cannot see them, check the connector is switched on.")
 
     print("\nTeamwork")
     if not os.environ.get("TEAMWORK_API_KEY"):
@@ -58,7 +61,7 @@ def cmd_whoami(args):
 def main():
     parser = argparse.ArgumentParser(
         prog="circle",
-        description="One command line for Circle Agency work: mail, calendar, people, Teamwork.",
+        description="The Orbit command line: Project Tracker, SharePoint files, handover, Teamwork.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__.split("\n", 2)[2],
     )
@@ -67,10 +70,9 @@ def main():
     sub.add_parser("login", help="device-code sign-in to Microsoft").set_defaults(func=cmd_login)
     sub.add_parser("whoami", help="show Microsoft and Teamwork identity and scopes").set_defaults(func=cmd_whoami)
 
-    mailcmd.register(sub)
-    calcmd.register(sub)
-    peoplecmd.register(sub)
+    trackercmd.register(sub)
     teamwork.register(sub)
+    handovercmd.register(sub)
 
     args = parser.parse_args()
     try:
@@ -78,6 +80,8 @@ def main():
     except graph.AuthError as e:
         sys.exit(f"{e}")
     except teamwork.TeamworkError as e:
+        sys.exit(f"{e}")
+    except RuntimeError as e:
         sys.exit(f"{e}")
     except BrokenPipeError:
         pass  # piping into head is normal

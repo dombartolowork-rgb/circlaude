@@ -1,4 +1,4 @@
-# Cir'Claude
+# Orbit Assistant
 
 > **Note for maintainers:** this file is loaded only when someone works *in*
 > this folder as a project. It is **not** loaded for people who installed the
@@ -14,39 +14,42 @@ Everything here runs on **Python 3 stdlib only**. No `pip install`,
 deliberately, so it works on a locked-down agency laptop. Do not add
 dependencies.
 
-## The one command
+## Two halves
 
-`bin/circle` is the entrypoint for Outlook, the calendar, the staff directory
-and Teamwork. On Windows `bin/circle.cmd` wraps it, so `circle` works either
-way once the folder is on PATH. Run `circle <command> --help` for any command.
+**Mail, calendar, people and Teams** go through the organisation's **Microsoft
+365 connector** in Claude (`mcp__claude_ai_Microsoft_365__*`). IT manage it and
+assign it person by person. Orbit adds no second route into anyone's mailbox.
+
+**`bin/circle`** covers what the connector cannot. On Windows `bin/circle.cmd`
+wraps it. Run `circle <command> --help` for any command.
 
 ```bash
-circle whoami                          # what is signed in, and what is not
-circle inbox --unread --preview        # numbered listing
-circle read 3                          # the [number] from the last listing IS the id
-circle thread 3                        # whole conversation, Inbox and Sent together
-circle draft-reply 3 --body "..."      # threaded reply, saved to Drafts
-circle agenda --week                   # calendar
-circle who ella                        # look up an address, never guess one
+circle whoami                          # Orbit's own sign-in, and Teamwork
+circle tracker next Subway             # Project Tracker: next free code
+circle tracker find --text notes.txt   # pin every job code in some text
+circle handover-render plan.json --out handover.docx
 circle tw-logged --week last           # what time is already logged
 ```
 
-**Message ids**: Graph ids are ~150 characters. Every listing numbers its
-results and caches the mapping in `~/.circle/idmap.json`, so `circle read 3`
-works. The numbers refer to the **most recent listing**, so re-list before
-acting if anything has moved on. `--ids` prints full ids when you need one.
+Why the split: the Project Tracker is 83 sheets, over 1MB and edited live, and
+the connector can neither read one sheet of it nor edit a cell, and it cannot
+upload files over 1MB (the status deck). Orbit's own sign-in asks for
+`Files.ReadWrite.All`, `Sites.Read.All` and `User.Read` only, through the app in
+`~/.circle/config.json`. **Until Circle's own app registration exists it falls
+back to Microsoft's Office client, which cannot take named scopes (AADSTS65002),
+so on that client it asks for `.default` and gets its full set, mail included.** Never use this sign-in for mail even so.
 
-## Sending email is gated, in code
+## Sending is gated by a hook
 
-`circle send`, `circle reply` and `circle reply-all` **save to Drafts** unless
-`--send-now` is passed, and a plugin hook makes every actual send ask the user
-for confirmation. This is not something to work around: the whole point is
-that nothing leaves the account unreviewed.
+`hooks/guard_send.py` makes every connector send, forward, meeting invite and
+SharePoint write, and `circle handover-upload`, ask the user for confirmation,
+whatever permission mode they are in. This is not something to work around: the
+whole point is that nothing leaves the account unreviewed.
 
-So the working pattern is: draft, show the full text in chat, and send only
-when the user says so. When the same message goes to several people, write
+So the working pattern is: draft, show the full text in chat, and send only when
+the user says so. When the same message goes to several people, write
 **separate personalised emails**, each to that person by name. Delete
-superseded drafts (`circle delete <id>`) so Drafts does not fill with junk.
+superseded drafts so Drafts does not fill with junk.
 
 ## Non-negotiable conventions
 
@@ -55,19 +58,19 @@ documents, decks, commit messages. Use a comma, brackets, a colon, a full
 stop, or a spaced hyphen ` - `. Em dashes read as AI-written. Ordinary hyphens
 inside words are fine.
 
-**Look up addresses, never guess them.** `circle who <name>`.
+**Look up addresses, never guess them.** The connector's `search_people`.
 
 **Personal style**: if `~/.circle/style.md` exists, it holds this user's own
 writing preferences. Read it before drafting anything outbound, and follow it.
 
-**Never commit a token or an API key.** The Graph token lives at
-`~/.circle/graph_token.json`, outside this repo, on purpose.
+**Never commit a token or an API key.** Orbit's token lives at
+`~/.circle/orbit_token.json`, outside this repo, on purpose.
 `TEAMWORK_API_KEY` comes from the environment. Never print either.
 
 ## Before saying a reply is owed, check Sent Items
 
 People reply from their phones, so the Inbox routinely shows
-unanswered-looking threads that are already handled. `circle thread <id>`
+unanswered-looking threads that are already handled. Searching with `recipient`
 spans Inbox and Sent Items together, so it is the honest check. A thread is
 only outstanding if the newest inbound message is newer than the user's last
 reply on it.
@@ -90,8 +93,10 @@ answers there. See `skills/circle-timesheet/SKILL.md`.
 | Path | What it is |
 |---|---|
 | `bin/circle` | the CLI entrypoint (`circle.cmd` for Windows) |
-| `lib/circle/` | shared Python: `graph.py` (auth + API), `mailcmd`, `calcmd`, `peoplecmd`, `teamwork` |
-| `hooks/` | the send-confirmation guard |
+| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild` |
+| `lib/circle/docxbuild.py` | writes .docx directly as OOXML, because converters flatten tables |
+| `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts |
+| `hooks/` | the confirmation guard on sends, invites and shared-file writes |
 | `skills/` | the agency processes, as skills Claude loads on demand |
 | `commands/` | slash commands for the routines people run repeatedly |
 | `reference/` | facts worth looking up: systems, project codes, house style |
