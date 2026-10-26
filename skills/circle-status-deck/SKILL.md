@@ -28,13 +28,26 @@ Drive id `b!btnAx0EMLUaFyzSCxuDrhOoZ9iBVLqhMoaIg-ctFYgk8FFSkIzgKRZsYdgK9oiXv`.
 date, e.g. `Status_13072026.pptx`. Get the previous week's file, copy it
 forward, and update, rather than starting fresh.
 
+The files in practice are named `Status_DDMMYY.pptx` (e.g. `Status_261026.pptx`),
+so search for the date both ways before concluding a week is missing.
+
 ## What to update
 
 - **Show & Tell divider slide (slide 3)** names the presenter and needs
   changing every week.
-- **The Housekeeping slide** carries the Show & Tell, Kitchen Duty and Social
-  Circle rotas by W/C date. It is the source for who is on what, so read the
-  rota from the deck rather than guessing the next name in a cycle.
+- **The Housekeeping slide** carries the Show & Tell, Kitchen Duty and Status
+  Schedule rotas, plus the Monthly Social. **Every rota list starts with the
+  W/C date of that week's status**, then runs four weeks forward: never carry
+  past weeks over at the top. Take the names from the schedule spreadsheet,
+  `WOW- Weekly Status/Rota's & Schedules/Status & Housekeeping Schedule <years>.xlsx`
+  (one sheet, three blocks: Kitchen, Status Leader, Show & Tell; dates are Excel
+  serials, so 46321 is 26 Oct 2026). Then apply any swaps people have agreed by
+  email since: check replies to the last circulation email, where someone often
+  says they are taking a slot. Write each line as `W/C 26th Oct - Name`, with a
+  spaced hyphen, not a dash.
+- If the spreadsheet and the deck disagree, the spreadsheet wins, but say which
+  names changed so the user can check.
+- **Slide 3 must match** the first Show & Tell name on the Housekeeping slide.
 - **Department slides** (Wins, Department Requests, AOB, Thought of the Week)
   are updated by their owners during the week. **Do not clear them without
   asking.** Carrying over someone's unposted win is better than deleting it.
@@ -55,6 +68,18 @@ from circle import graph
 The token carries `Files.ReadWrite.All`. **Files over 4 MB need a Graph
 upload session**, and a status deck usually is over 4 MB, so expect to use
 one: `POST .../createUploadSession`, then PUT the bytes in ranges.
+
+In practice a plain `PUT .../content` with an `If-Match` eTag has worked for a
+12 MB deck, and is simpler. Two traps:
+
+- **423 Locked** means someone has the deck open in PowerPoint. Ask the user to
+  close it (it is often them), then check the eTag again before uploading.
+- A **failed upload session blocks retries** with 409 `nameAlreadyExists` until it
+  expires. Fall back to the plain PUT rather than opening another session.
+
+Always download the live file and compare its eTag immediately before
+uploading: owners edit their department slides all week, and an upload from a
+stale copy wipes their changes.
 
 ## The circulation email
 
