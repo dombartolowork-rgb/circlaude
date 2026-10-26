@@ -13,8 +13,8 @@ fetch that too (`--ffmpeg`), elsewhere install it or ask IT to push it.
     circle yt-find <url> "phrase"               search the auto-captions for a moment
 
 Only download what you have the right to use: Circle's own films, client-supplied
-material, or reference for internal work. Uploading to Vimeo is not part of Orbit
-yet, because the Vimeo key belongs behind the Orbit gateway, not on laptops.
+material, or reference for internal work. To put a finished film on Circle's Vimeo,
+see `circle vi-upload`.
 """
 import hashlib
 import json

@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Orbit Assistant, Circle Agency's work assistant.",
-    "version": "0.6.1"
+    "version": "0.7.0"
   },
   "plugins": [
     {
       "name": "orbit",
       "source": "./",
       "description": "Orbit Assistant, Circle Agency's work assistant: Outlook mail and calendar, colleague lookup, Teamwork timesheets, SharePoint project setup, YouTube downloads and clips, quick ffmpeg video edits, Blender previz and models of real spaces, Nano Banana image generation, and the agency's working conventions.",
-      "version": "0.6.1",
+      "version": "0.7.0",
       "category": "productivity",
       "strict": false
     }

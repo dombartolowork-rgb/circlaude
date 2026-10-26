@@ -65,10 +65,11 @@ writing preferences. Read it before drafting anything outbound, and follow it.
 
 **Never commit a token or an API key.** Orbit's token lives at
 `~/.circle/orbit_token.json`, outside this repo, on purpose.
-`TEAMWORK_API_KEY` comes from the environment, and the Vertex image key from
-`~/.circle/vertex_key` or `VERTEX_API_KEY`. Never print any of them. The image key is
-shared across Circle and people may paste it in chat, which is fine; what matters is
-that it never lands in this repo.
+`TEAMWORK_API_KEY` comes from the environment, the Vertex image key from
+`~/.circle/vertex_key` or `VERTEX_API_KEY`, and the Vimeo key from
+`~/.circle/vimeo_token.json` or `VIMEO_TOKEN`. Never print any of them. The image and
+Vimeo keys are shared across Circle and people may paste them in chat, which is fine;
+what matters is that they never land in this repo.
 
 ## Before saying a reply is owed, check Sent Items
 
@@ -96,7 +97,7 @@ answers there. See `skills/circle-timesheet/SKILL.md`.
 | Path | What it is |
 |---|---|
 | `bin/circle` | the CLI entrypoint (`circle.cmd` for Windows) |
-| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `imagecmd` (Nano Banana), `bins` (finds ffmpeg, yt-dlp, Blender) |
+| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `imagecmd` (Nano Banana), `vimeocmd` (Vimeo uploads), `bins` (finds ffmpeg, yt-dlp, Blender) |
 | `lib/circle/docxbuild.py` | writes .docx directly as OOXML, because converters flatten tables |
 | `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts; `tools/blender/` previz and space templates |
 | `hooks/` | the confirmation guard on sends, invites and shared-file writes |

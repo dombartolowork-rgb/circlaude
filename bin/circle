@@ -25,7 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
 from circle import (blendercmd, graph, handovercmd, imagecmd, teamwork,  # noqa: E402
-                    trackercmd, videocmd, ytcmd)
+                    trackercmd, videocmd, vimeocmd, ytcmd)
 
 
 def cmd_login(args):
@@ -82,6 +82,7 @@ def main():
     videocmd.register(sub)
     blendercmd.register(sub)
     imagecmd.register(sub)
+    vimeocmd.register(sub)
 
     args = parser.parse_args()
     try:

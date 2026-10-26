@@ -115,7 +115,29 @@ Then make one small test picture to prove it works, and open it for them:
 If it fails with a permission or key error, the key was probably copied short.
 Ask them to copy it again. If it still fails, say Dom can sort it and move on.
 
-**6. Ask how they log time.** Only if they want time logging at all. If they
+**6. Vimeo, if they share videos.**
+
+Ask:
+
+> Do you ever put videos on Vimeo, to send a cut to a client or a colleague? It
+> can do that for you, on Circle's Vimeo account. There is a key for it that Dom
+> gives out. If you have it, paste it here. If not, skip this and add it any time.
+
+If they paste it, save it without repeating it back to them:
+
+`printf '%s' '<the key>' | circle vi-setup --key-stdin`
+
+That checks the key with Vimeo as it saves. If it worked, prove it by listing the
+three newest videos with `circle vi-list --limit 3`, and tell them in a sentence:
+
+> That worked, I can see Circle's Vimeo. Just ask me to put a video on Vimeo and
+> I will upload it as unlisted and give you the link to send.
+
+Do not upload anything as a test: that would put a file on the agency's account. If
+it says the key was not accepted, it was probably copied short. Ask them to copy it
+again. If it still fails, say Dom can sort it and move on.
+
+**7. Ask how they log time.** Only if they want time logging at all. If they
 are just trying this out, skip it and say they can set it up later.
 
 First check whether the **Teamwork MCP connector** is attached to their
@@ -130,9 +152,10 @@ If it does not, they need a key from Teamwork. Put it in their terms:
 > will show you where it goes. Or skip this, it is only for timesheets.
 
 **Never ask them to paste their Teamwork key into the chat**: that one is personal
-to them. (Circle's image key in step 5 is different: it is shared, and pasting it is fine.)
+to them. (Circle's image and Vimeo keys in steps 5 and 6 are different: they are shared, and
+pasting them is fine.)
 
-**7. Learn how they log their time.** Only if step 6 happened.
+**8. Learn how they log their time.** Only if step 7 happened.
 
 If `~/.circle/timesheet-policy.md` does not exist, ask them a few short
 questions, conversationally, not as a form: how long their normal working day
@@ -140,7 +163,7 @@ is, what they do with all-agency days and shoot days, whether they log a
 dentist appointment. Write the answers to that file as short bullets and tell
 them what you have saved, so they can correct it.
 
-**8. Show them what to say.**
+**9. Show them what to say.**
 
 End here, with examples rather than instructions:
 
@@ -152,6 +175,7 @@ End here, with examples rather than instructions:
 > - draft a reply to Rich about the status deck
 > - did I log all my time last week
 > - make me a concept image of a pop-up coffee bar in a station
+> - put this video on Vimeo and give me the link
 >
 > One thing worth knowing: it will never send an email without showing you
 > first and asking. Same with timesheets, it shows you what it worked out and

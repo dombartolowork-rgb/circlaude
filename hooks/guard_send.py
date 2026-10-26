@@ -21,6 +21,11 @@ SHARE_PATTERNS = [
     r"circle(\.cmd)?\s+handover-upload\b",
 ]
 
+# Puts a file on Circle's Vimeo account, where anyone with the link can watch it.
+PUBLISH_PATTERNS = [
+    r"circle(\.cmd)?\s+vi-upload\b",
+]
+
 SEND_PATTERNS = [
     r"circle(\.cmd)?\s+[^|;&]*--send-now",   # gated sends being un-gated
     r"circle(\.cmd)?\s+send-draft\b",        # sending an existing draft
@@ -59,6 +64,9 @@ def main():
     elif any(re.search(p, command) for p in SHARE_PATTERNS):
         reason = ("This uploads a document to a shared agency folder where "
                   "colleagues will read it. Check the content before approving.")
+    elif any(re.search(p, command) for p in PUBLISH_PATTERNS):
+        reason = ("This uploads a video to Circle's Vimeo account. Check it is the "
+                  "right file, and the privacy setting, before approving.")
     elif any(re.search(p, command) for p in SEND_PATTERNS):
         reason = ("This command sends email from your account. Check the draft "
                   "text is what you want before approving.")

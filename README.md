@@ -26,9 +26,8 @@ drone orbits, Blender models of real spaces (measured, or imported from a phone
 scan) with still renders from chosen angles (`blender-run`, templates in
 `tools/blender/`), and image generation with Google's Nano Banana models on
 Circle's own key (`img-gen`), which can paint those stills into realistic
-pictures. Uploading to Vimeo is not
-in Orbit yet: the Vimeo key belongs behind the planned Orbit gateway, not on
-laptops.
+pictures. Uploading to Circle's Vimeo, Unlisted with a review link
+(`vi-upload`), on Circle's own key.
 
 **Sending is gated.** Orbit ships a hook that makes every send, forward,
 meeting invite and shared-file change ask you for confirmation, whatever
@@ -53,6 +52,8 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **Blender** (optional, for previz and spaces) - free from blender.org
 - **Circle's Vertex AI key** (optional, for image generation) - from whoever holds
   Circle's Google Cloud account, saved during `/orbit:onboard`; never commit it
+- **Circle's Vimeo key** (optional, for uploading to Vimeo) - from Dom, saved during
+  `/orbit:onboard`; never commit it
 
 IT push the installs. On a Mac, Python and Git are usually already present;
 install ffmpeg separately.

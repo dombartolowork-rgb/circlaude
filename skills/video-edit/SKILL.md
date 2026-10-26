@@ -1,6 +1,6 @@
 ---
 name: video-edit
-description: Quick, frame-exact video edits without Premiere - trim, join with hard cuts or dissolves, retime, build a silent looping screen video, fit to 1080p, push in over the end of a clip, and make contact sheets to check work. Use when someone asks to "cut this down", "trim", "join these clips", "make a loop for the screen", "crossfade", "speed it up", "make it 1080p", "check this video", or to inspect a file's length, size or audio.
+description: Quick, frame-exact video edits without Premiere - trim, join with hard cuts or dissolves, retime, build a silent looping screen video, fit to 1080p, push in over the end of a clip, and make contact sheets to check work. Use when someone asks to "cut this down", "trim", "join these clips", "make a loop for the screen", "crossfade", "speed it up", "make it 1080p", "check this video", "put it on Vimeo", "Vimeo link", or to inspect a file's length, size or audio.
 ---
 
 # Video edits with ffmpeg
@@ -46,3 +46,22 @@ output before saying it is done:
 - `vid-sheet` for the content: open the image and look at it.
 
 Report what you checked.
+
+## Putting it on Vimeo
+
+`circle vi-upload cut.mp4 --name "CCEP420 THINK Pod - V2"` uploads to Circle's Vimeo
+account as **Unlisted**, with a review link for frame-accurate comments. It needs
+Circle's Vimeo key (`circle vi-setup`, or `/orbit:onboard`); if it is missing, say
+Dom gives it out.
+
+- Upload only when the person has asked for it. It puts the file on the agency's
+  account, so the hook asks them to confirm.
+- Check the file before uploading (`vid-probe`, `vid-sheet`), not after.
+- Run it in the background and do not pipe it into `head` or `tail`: progress goes
+  to stderr, and a 3GB file takes around 20 minutes. Dropped connections resume on
+  their own.
+- **Uploaded is not playable.** Vimeo then transcodes. Before anyone is sent the
+  link, run `circle vi-video <id>` and wait for `transcode complete`, `playable
+  True` and a real duration. Until then the link shows a spinner.
+- `vi-list` finds a video's id (the link can be had mid-upload from there),
+  `vi-comments <id>` reads review comments.

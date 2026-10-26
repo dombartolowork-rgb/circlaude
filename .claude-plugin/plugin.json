@@ -1,7 +1,7 @@
 {
   "name": "orbit",
-  "description": "Orbit Assistant, Circle Agency's work assistant: Outlook mail and calendar, colleague lookup, Teamwork timesheets, SharePoint project setup, YouTube downloads and clips, quick ffmpeg video edits, Blender previz and models of real spaces, Nano Banana image generation, and the agency's working conventions. Sending email is gated behind human review.",
-  "version": "0.6.1",
+  "description": "Orbit Assistant, Circle Agency's work assistant: Outlook mail and calendar, colleague lookup, Teamwork timesheets, SharePoint project setup, YouTube downloads and clips, quick ffmpeg video edits, Blender previz and models of real spaces, Nano Banana image generation, Vimeo uploads, and the agency's working conventions. Sending email is gated behind human review.",
+  "version": "0.7.0",
   "author": {
     "name": "Dom Bartolo",
     "email": "dom.bartolo@circleagency.co.uk"
@@ -17,6 +17,7 @@
     "teamwork",
     "timesheets",
     "video",
+    "vimeo",
     "youtube"
   ]
 }
