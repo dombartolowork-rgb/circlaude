@@ -15,7 +15,8 @@ Two halves:
 Plus skills that carry the agency's own processes: inbox triage that
 reconciles against Sent Items, timesheet drafting from the calendar, sent mail
 and what you worked on in Claude (`claude-activity`), opening a new job in the
-right order, the weekly status deck, the annual leave handover, handling
+right order, the weekly status deck, the annual leave handover, clearing Pleo expenses
+(receipts found and attached, each one coded to the right job), handling
 client transfers and shared SharePoint files safely, SwissTransfer downloads,
 and taking a section out of a video too big to download.
 

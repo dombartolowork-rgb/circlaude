@@ -184,6 +184,7 @@ End here, with examples rather than instructions:
 > - did I log all my time last week
 > - make me a concept image of a pop-up coffee bar in a station
 > - put this video on Vimeo and give me the link
+> - sort out my Pleo expenses
 >
 > One thing worth knowing: it will never send an email without showing you
 > first and asking. Same with timesheets, it shows you what it worked out and
