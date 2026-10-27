@@ -157,11 +157,18 @@ pasting them is fine.)
 
 **8. Learn how they log their time.** Only if step 7 happened.
 
-If `~/.circle/timesheet-policy.md` does not exist, ask them a few short
-questions, conversationally, not as a form: how long their normal working day
-is, what they do with all-agency days and shoot days, whether they log a
-dentist appointment. Write the answers to that file as short bullets and tell
-them what you have saved, so they can correct it.
+If `~/.circle/timesheet-policy.md` does not exist, build their timesheet
+profile as the `circle-timesheet` skill describes: look at their last few weeks
+of calendar, sent mail and Teamwork time first, tell them in a few lines what
+their week looks like, then ask only the questions that raised, conversationally,
+one at a time, with your suggestion first. Write it to that file as short
+bullets and show them, so they can correct it.
+
+Tell them how approval works, because it is the one thing they must remember:
+
+> When I draft your timesheet, nothing goes into Teamwork until you reply
+> **Final Draft Approved for logging**. A plain "yes" just answers my questions,
+> so you can never log the wrong thing by accident.
 
 **9. Show them what to say.**
 
@@ -173,6 +180,7 @@ End here, with examples rather than instructions:
 > - what do I need to reply to today
 > - am I free Thursday afternoon
 > - draft a reply to Rich about the status deck
+> - draft my timesheet for yesterday
 > - did I log all my time last week
 > - make me a concept image of a pop-up coffee bar in a station
 > - put this video on Vimeo and give me the link

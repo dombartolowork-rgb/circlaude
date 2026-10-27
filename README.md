@@ -13,7 +13,8 @@ Two halves:
   leave handover, and Teamwork timesheets with a real dry run.
 
 Plus skills that carry the agency's own processes: inbox triage that
-reconciles against Sent Items, timesheet logging, opening a new job in the
+reconciles against Sent Items, timesheet drafting from the calendar, sent mail
+and what you worked on in Claude (`claude-activity`), opening a new job in the
 right order, the weekly status deck, the annual leave handover, handling
 client transfers and shared SharePoint files safely, SwissTransfer downloads,
 and taking a section out of a video too big to download.

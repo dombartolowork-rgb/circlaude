@@ -97,7 +97,7 @@ answers there. See `skills/circle-timesheet/SKILL.md`.
 | Path | What it is |
 |---|---|
 | `bin/circle` | the CLI entrypoint (`circle.cmd` for Windows) |
-| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `imagecmd` (Nano Banana), `vimeocmd` (Vimeo uploads), `bins` (finds ffmpeg, yt-dlp, Blender) |
+| `lib/circle/` | shared Python: `graph.py` (narrow sign-in + API), `trackercmd`, `teamwork`, `handovercmd`, `docxbuild`, `ytcmd` (YouTube), `videocmd` (ffmpeg edits), `blendercmd`, `imagecmd` (Nano Banana), `vimeocmd` (Vimeo uploads), `claudeactivity` (Claude sessions as timesheet evidence), `bins` (finds ffmpeg, yt-dlp, Blender) |
 | `lib/circle/docxbuild.py` | writes .docx directly as OOXML, because converters flatten tables |
 | `tools/` | standalone helpers, e.g. `mp4tail.py` for partial video extracts; `tools/blender/` previz and space templates |
 | `hooks/` | the confirmation guard on sends, invites and shared-file writes |
