@@ -4,6 +4,7 @@
     circle vi-whoami                          which Vimeo account the key opens
     circle vi-list [--query NAME]             videos, newest first
     circle vi-video <id>                      one video: duration, privacy, link, review link
+    circle vi-share <id> [<id> ...]           the link to send outside Circle, Unlisted first
     circle vi-upload <file> --name "..."      upload, Unlisted by default, with a review link
     circle vi-comments <id>                   review comments on a video
 
@@ -150,10 +151,41 @@ def cmd_video(args):
     print("privacy:  ", (v.get("privacy") or {}).get("view"))
     print("status:   ", v.get("status"), "| transcode", (v.get("transcode") or {}).get("status"),
           "| playable", v.get("is_playable"))
-    print("link:     ", v.get("link"))
+    if _shareable(v):
+        print("share:    ", v.get("link"))
+    else:
+        print("link:     ", v.get("link"), f"(not a share link: run `circle vi-share {args.id}`)")
     rp = (v.get("review_page") or {}).get("link")
     if rp:
         print("review:   ", rp)
+
+
+def _shareable(v):
+    """Only an Unlisted video's hashed link plays for someone outside our account.
+
+    A bare vimeo.com/<id> asks people to sign in, even on a video set to Anybody,
+    so never send one.
+    """
+    link = v.get("link") or ""
+    return (v.get("privacy") or {}).get("view") == "unlisted" and \
+        link.rstrip("/").count("/") >= 4
+
+
+def cmd_share(args):
+    """Print the link to send outside Circle, making the video Unlisted first if needed."""
+    for vid in args.ids:
+        st, v = call(f"/videos/{vid}", {"fields": "name,privacy,link"})
+        _check(st, v)
+        was = (v.get("privacy") or {}).get("view")
+        if was != "unlisted":
+            st, d = call(f"/videos/{vid}", method="PATCH", body={"privacy": {"view": "unlisted"}})
+            _check(st, d, ok=(200, 204))
+            st, v = call(f"/videos/{vid}", {"fields": "name,privacy,link"})
+            _check(st, v)
+        note = f"  (was {was}, now unlisted)" if was != "unlisted" else ""
+        if not _shareable(v):
+            note += "  WARNING: no unlisted hash came back, do not send this"
+        print(f"{v.get('name')}: {v.get('link')}{note}")
 
 
 def cmd_upload(args):
@@ -220,7 +252,7 @@ def cmd_upload(args):
         if st not in (200, 204):
             print("Note: could not confirm the review page is on, check in Vimeo.")
     st, v = call(f"/videos/{vid}", {"fields": "link,review_page,privacy,transcode.status"})
-    print("\nlink:     ", v.get("link") or f"https://vimeo.com/{vid}")
+    print("\nshare:    " if _shareable(v) else "\nlink (not a share link): ", v.get("link"))
     rp = (v.get("review_page") or {}).get("link")
     if rp:
         print("review:   ", rp)
@@ -259,6 +291,10 @@ def register(sub):
     p = sub.add_parser("vi-video", help="one video: duration, privacy, link, review link")
     p.add_argument("id")
     p.set_defaults(func=cmd_video)
+
+    p = sub.add_parser("vi-share", help="the link to send outside Circle, making it Unlisted if needed")
+    p.add_argument("ids", nargs="+")
+    p.set_defaults(func=cmd_share)
 
     p = sub.add_parser("vi-upload", help="upload a file to Circle's Vimeo, Unlisted, with a review link")
     p.add_argument("file")

@@ -63,5 +63,10 @@ Dom gives it out.
 - **Uploaded is not playable.** Vimeo then transcodes. Before anyone is sent the
   link, run `circle vi-video <id>` and wait for `transcode complete`, `playable
   True` and a real duration. Until then the link shows a spinner.
+- **Only send the unlisted link, `vimeo.com/<id>/<hash>`.** A bare `vimeo.com/<id>`
+  asks anyone outside our account to sign in, even on a video set to Anybody. For
+  an existing video, `circle vi-share <id> [<id> ...]` makes it Unlisted if it is
+  not already and prints the link to send. Switching a video that a website embeds
+  without the hash can break that player, so check before unlisting one.
 - `vi-list` finds a video's id (the link can be had mid-upload from there),
   `vi-comments <id>` reads review comments.
