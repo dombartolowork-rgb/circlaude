@@ -205,8 +205,8 @@ using their last working day. The plugin asks for confirmation before any upload
 because it lands in a folder colleagues read and act on.
 
 If they want it emailed to whoever is covering, that is a separate step and the
-normal rule applies: draft it, show them, send on their say-so. Separate
-personalised emails, not one group thread.
+normal rule applies: draft it, show them, send on their say-so. Several people
+they name go on one thread, unless they say otherwise.
 
 ## House rules that bite here
 

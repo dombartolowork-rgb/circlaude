@@ -47,8 +47,8 @@ whatever permission mode they are in. This is not something to work around: the
 whole point is that nothing leaves the account unreviewed.
 
 So the working pattern is: draft, show the full text in chat, and send only when
-the user says so. When the same message goes to several people, write
-**separate personalised emails**, each to that person by name. Delete
+the user says so. When the user names several people for one email, put them
+**all on the same thread**, unless they say to send them separately. Delete
 superseded drafts so Drafts does not fill with junk.
 
 ## Non-negotiable conventions

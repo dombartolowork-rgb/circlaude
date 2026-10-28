@@ -22,8 +22,9 @@ Ordinary hyphens inside words are fine: day-to-day, hands-on, non-developer.
 **Draft first, show the text, send on the user's say-so.** People revise framing once they
 see it. Wait for an explicit "send it".
 
-**Separate personalised emails** beat one group email when the same message goes
-to several people. Write each to that person by name.
+**Several named people go on one thread.** When the user names several people
+for an email, put them all on the same email, unless they say to send them
+separately.
 
 **Delete superseded drafts** so Drafts does not fill with junk.
 

@@ -74,8 +74,9 @@ telling the user it is ready.
 **Never use em dashes.** Use a comma, brackets, a colon, a full stop, or a
 spaced hyphen ` - `. Em dashes read as AI-written. See `reference/house-style.md`.
 
-**Separate personalised emails beat one group email** when the same message
-goes to several people. Write each one to that person, by name.
+**Several named people go on one thread.** When the user names several people
+for an email, put them all on the same email, unless they say to send them
+separately.
 
 **Delete superseded drafts** when a revision replaces one, so Drafts stays clean.
 

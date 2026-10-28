@@ -52,7 +52,8 @@ Keep it tight. They want the list, not a summary of every thread.
 ## Then drafting
 
 Follow `circle-email` exactly: **draft first, show the text, send on their say-so**.
-No em dashes. Separate personalised emails rather than one group email. To reach
+No em dashes. Several people the user names go on one thread, unless they say
+otherwise. To reach
 one person on a thread with clients or freelancers on it, reply to a message
 **that person sent**.
 

@@ -35,8 +35,9 @@ Orbit enforces this: a hook asks the user to confirm before anything is sent,
 forwarded or sent as a meeting invite, whatever permission mode they are in.
 Save to Drafts and let them approve; do not look for a way round the prompt.
 
-**Separate personalised emails beat one group email** when the same message
-goes to several people. Write each one to that person, by name.
+**Several named people go on one thread.** When the user names several people
+for an email, put them all on the same email, unless they say to send them
+separately.
 
 **Delete superseded drafts** (`outlook_delete_draft`) when a revision replaces
 one, so Drafts does not fill with junk.
