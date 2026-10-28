@@ -52,7 +52,8 @@ def cmd_whoami(args):
 
     print("\nTeamwork")
     if not os.environ.get("TEAMWORK_API_KEY"):
-        print("  TEAMWORK_API_KEY not set, so timesheet commands will not work.")
+        print("  No key set. That is fine if the Teamwork connector is on in Claude,")
+        print("  which is the normal route for timesheets. The key only adds tw-* dry runs.")
     else:
         try:
             me = teamwork.api("GET", "/me.json").get("person", {})

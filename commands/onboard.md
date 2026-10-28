@@ -25,8 +25,11 @@ to push through.
 
 **1. Find the command.**
 
-Run `command -v circle`. If nothing comes back, use
-`"$CLAUDE_PLUGIN_ROOT/bin/circle"` for everything below. That is normal.
+If `$CLAUDE_PLUGIN_ROOT` is set, use `"$CLAUDE_PLUGIN_ROOT/bin/circle"` for
+everything below, even when `command -v circle` finds one. A `circle` already
+on the PATH can belong to something else (Claude'menico, or an old circlaude
+plugin), which has a different sign-in file and no `tracker` command. Only fall
+back to the bare `circle` when `$CLAUDE_PLUGIN_ROOT` is empty.
 Do not mention any of this to them.
 
 **2. Check Python is there.**
@@ -88,7 +91,8 @@ short code and a URL. Give them both, clearly:
 While they do that the sign-in is waiting in the background and will pick
 itself up. When they say they are done, run `circle whoami` and read back the
 address it reports. Then check it works with `circle tracker sheets`, and tell
-them in a sentence ("I can see the Project Tracker.").
+them in a sentence ("I can see the Project Tracker."). If that check errors,
+the step has failed: do not reason your way past it, say so and stop.
 
 If it did not take, the code may have expired. Say so lightly and get a new one.
 
@@ -140,9 +144,11 @@ again. If it still fails, say Dom can sort it and move on.
 **7. Ask how they log time.** Only if they want time logging at all. If they
 are just trying this out, skip it and say they can set it up later.
 
-First check whether the **Teamwork MCP connector** is attached to their
-Claude account, by quietly trying a Teamwork tool. If it works, they need
-nothing else. Say so and move on.
+Before saying anything about Teamwork, check whether the **Teamwork MCP
+connector** is attached to their Claude account, by quietly trying a Teamwork
+tool (`twprojects-get_user_me`). Do not mention a key until that check has
+failed. If it works, they need nothing else: tell them timesheets are ready
+and move on. `circle whoami` saying no key is set is expected here, not a fault.
 
 If it does not, they need a key from Teamwork. Put it in their terms:
 
