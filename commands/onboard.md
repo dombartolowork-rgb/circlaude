@@ -176,7 +176,52 @@ Tell them how approval works, because it is the one thing they must remember:
 > **Final Draft Approved for logging**. A plain "yes" just answers my questions,
 > so you can never log the wrong thing by accident.
 
-**9. Show them what to say.**
+**9. WhatsApp, if they want it.**
+
+Ask, and make clear it is optional:
+
+> Last one, and it is entirely up to you. I can connect to your WhatsApp, so I can
+> check what a freelancer or the crew said, find something agreed in a group chat,
+> or send a message for you. It is your own WhatsApp, so I will stick to work
+> chats, and I will always show you a message before it goes. Do you want to set
+> it up now? It takes about a minute, and you need your phone.
+
+If they say no, skip to step 10 and mention they can say "connect my WhatsApp"
+any time.
+
+If yes, tell them what is about to happen **before** it happens:
+
+> Get your phone ready. In a moment a page opens in your browser with a square
+> code on it. On your phone, open WhatsApp, then:
+>
+> - **iPhone:** tap **Settings**, then **Linked devices**, then **Link a device**.
+> - **Android:** tap the **three dots** at the top right, then **Linked devices**,
+>   then **Link a device**.
+>
+> Then point your phone at the code on the screen. The code changes every 20
+> seconds or so, and the page keeps up by itself, so just scan whatever is showing.
+
+Then run `circle wa-connect` **in the background** and read its output as it
+comes. It installs the WhatsApp link, starts it, and opens the page in their
+browser. If the output says it could not open the browser, it prints the page
+address instead: give them that as a link to click.
+
+It prints `CONNECTED` once the phone has scanned the code. Then confirm with
+`circle wa-status`, and tell them in a sentence, **without reading out any of
+their chats**:
+
+> That worked, your WhatsApp is connected. It starts by itself whenever your
+> laptop does, so you never need to do this again. Your older messages will keep
+> arriving for a few minutes. On your phone it shows as "Orbit" under Linked
+> devices, which is also where you would remove it.
+
+If it says the codes ran out, that is normal if the phone was not ready. Say so
+lightly and run it again. If it says this needs an Apple Silicon Mac, or the page
+says **"This needs an update"**, tell them Dom can sort it, and move on. If
+anything else goes wrong, do not troubleshoot it with them: say it did not work
+this time, that Dom can sort it, and carry on to step 10.
+
+**10. Show them what to say.**
 
 End here, with examples rather than instructions:
 
@@ -190,6 +235,7 @@ End here, with examples rather than instructions:
 > - did I log all my time last week
 > - make me a concept image of a pop-up coffee bar in a station
 > - put this video on Vimeo and give me the link
+> - what did Tom say on WhatsApp about Monday's shoot
 > - sort out my Pleo expenses
 >
 > One thing worth knowing: it will never send an email without showing you

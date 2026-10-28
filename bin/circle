@@ -13,6 +13,7 @@ Claude. This command covers what that connector cannot:
   circle vid-cut clip.mp4 --from 4   video: probe / cut / join / sheet / 1080 / pushend (needs ffmpeg)
   circle blender-run script.py -- out  Blender previz and space stills, headless; img-crop for decals
   circle img-gen "prompt" --ref a.png  Nano Banana images, guided by references (Circle's key)
+  circle wa-connect                  link your WhatsApp (code opens in the browser), then wa-read / wa-send
 
 Run `circle <command> --help` for any command's options.
 Pure Python 3 stdlib: no pip install needed.
@@ -25,7 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
 from circle import (blendercmd, claudeactivity, graph, handovercmd, imagecmd, teamwork,  # noqa: E402
-                    trackercmd, videocmd, vimeocmd, ytcmd)
+                    trackercmd, videocmd, vimeocmd, wacmd, ytcmd)
 
 
 def cmd_login(args):
@@ -84,6 +85,7 @@ def main():
     blendercmd.register(sub)
     imagecmd.register(sub)
     vimeocmd.register(sub)
+    wacmd.register(sub)
     claudeactivity.register(sub)
 
     args = parser.parse_args()

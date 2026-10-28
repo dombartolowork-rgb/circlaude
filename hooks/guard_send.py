@@ -26,6 +26,15 @@ PUBLISH_PATTERNS = [
     r"circle(\.cmd)?\s+vi-upload\b",
 ]
 
+# Sends from the person's own WhatsApp, which they cannot unsend for the other
+# side once it is read. Unlinking deletes this laptop's copy of their messages.
+WHATSAPP_PATTERNS = [
+    r"circle(\.cmd)?\s+wa-send\b",
+]
+WHATSAPP_UNLINK_PATTERNS = [
+    r"circle(\.cmd)?\s+wa-disconnect\b",
+]
+
 SEND_PATTERNS = [
     r"circle(\.cmd)?\s+[^|;&]*--send-now",   # gated sends being un-gated
     r"circle(\.cmd)?\s+send-draft\b",        # sending an existing draft
@@ -67,6 +76,12 @@ def main():
     elif any(re.search(p, command) for p in PUBLISH_PATTERNS):
         reason = ("This uploads a video to Circle's Vimeo account. Check it is the "
                   "right file, and the privacy setting, before approving.")
+    elif any(re.search(p, command) for p in WHATSAPP_PATTERNS):
+        reason = ("This sends a WhatsApp message from your own WhatsApp. Check who it "
+                  "is going to and the wording before approving.")
+    elif any(re.search(p, command) for p in WHATSAPP_UNLINK_PATTERNS):
+        reason = ("This unlinks WhatsApp from this laptop and deletes its copy of your "
+                  "messages. Approve only if that is what you want.")
     elif any(re.search(p, command) for p in SEND_PATTERNS):
         reason = ("This command sends email from your account. Check the draft "
                   "text is what you want before approving.")
