@@ -83,6 +83,22 @@ turned "week commencing the 31st" into "due by the 31st", and the second error
 reached a supplier in a draft. The summary is fine for orientation; the
 transcript is what was actually said.
 
+## Fathom links: share links only
+
+**Never put a `fathom.video/calls/...` link in an email or message to anyone
+else.** It only opens for someone signed in to the recorder's Fathom account, so
+a colleague or client clicking it hits a wall. Other people need the public share
+link, `fathom.video/share/...`.
+
+The Fathom connector only ever returns the `/calls/` link and cannot make a share
+link. So when a draft needs one, **ask the user for it before drafting** (on the
+call page in Fathom: Share, then Copy link). If they are not around, leave a
+visible placeholder such as `[Fathom share link]` and say so when showing the
+draft, rather than pasting the `/calls/` link in.
+
+A `/calls/` link is fine in the user's own notes, diary blocks or chat, since only
+they open those.
+
 ## Check the thing itself, not a stand-in for it
 
 Before saying a file, a video or a document is fine, check the property that

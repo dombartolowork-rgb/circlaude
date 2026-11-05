@@ -43,7 +43,9 @@ so on that client it asks for `.default` and gets its full set, mail included.**
 
 `hooks/guard_send.py` makes every connector send, forward, meeting invite and
 SharePoint write, and `circle handover-upload`, ask the user for confirmation,
-whatever permission mode they are in. This is not something to work around: the
+whatever permission mode they are in. The one exception is a calendar
+event with no attendees: a personal time-on-task block reaches nobody, so it
+passes. Any event that names someone still asks. This is not something to work around: the
 whole point is that nothing leaves the account unreviewed.
 
 So the working pattern is: draft, show the full text in chat, and send only when

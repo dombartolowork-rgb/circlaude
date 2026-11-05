@@ -13,7 +13,9 @@ Two halves:
   leave handover, and Teamwork timesheets with a real dry run.
 
 Plus skills that carry the agency's own processes: inbox triage that
-reconciles against Sent Items, timesheet drafting from the calendar, sent mail
+reconciles against Sent Items, a loose-ends sweep that finds the emails
+nobody answered and what each one is holding up (`/loose-ends`), day planning
+that blocks your tasks into Outlook round your meetings (`/plan-day`), timesheet drafting from the calendar, sent mail
 and what you worked on in Claude (`claude-activity`), opening a new job in the
 right order, the weekly status deck, the annual leave handover, clearing Pleo expenses
 (receipts found and attached, each one coded to the right job), handling
@@ -33,7 +35,8 @@ pictures. Uploading to Circle's Vimeo, Unlisted with a review link
 
 **Sending is gated.** Orbit ships a hook that makes every send, forward,
 meeting invite and shared-file change ask you for confirmation, whatever
-permission mode Claude Code is in. Nothing leaves your account unreviewed.
+permission mode Claude Code is in. Personal diary blocks with nobody invited
+go straight in. Nothing leaves your account unreviewed.
 
 **Your credentials stay yours.** The connector signs in as you inside Claude.
 Orbit's own sign-in, used only for SharePoint files, is a one-time device code;

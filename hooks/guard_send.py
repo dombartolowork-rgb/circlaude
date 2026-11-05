@@ -55,6 +55,17 @@ MCP_SHARE = re.compile(
     r"sharepoint_delete_item|sharepoint_move_item|sharepoint_rename_item)$")
 
 
+def _has_attendees(payload):
+    """True if a new event would invite anyone. Any input field naming attendees
+    counts, whatever the connector calls it, so a renamed field fails safe. Only
+    create is relaxed: updating an existing meeting can notify its attendees even
+    when the update itself lists none."""
+    tool_input = payload.get("tool_input") or {}
+    if not isinstance(tool_input, dict):
+        return True
+    return any("attendee" in k.lower() and v for k, v in tool_input.items())
+
+
 def main():
     try:
         payload = json.load(sys.stdin)
@@ -62,6 +73,10 @@ def main():
         return  # never break the tool call on a malformed payload
     tool = payload.get("tool_name") or ""
     command = (payload.get("tool_input") or {}).get("command", "") if tool == "Bash" else ""
+    # A personal time-on-task block (no attendees) reaches nobody, so it passes.
+    # Anything that invites people still asks, case by case.
+    if tool.endswith("__outlook_create_event") and not _has_attendees(payload):
+        return
     if MCP_SEND.search(tool):
         reason = ("This sends from your account (an email, a forward or a meeting "
                   "invite). Check the wording and recipients before approving.")
