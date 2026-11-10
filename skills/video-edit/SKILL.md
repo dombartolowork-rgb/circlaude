@@ -27,6 +27,8 @@ missing.
 `--clip FILE [IN [OUT]]`: times are seconds or m:ss. Leave OUT off for "to the end".
 It is a separate option rather than `file:in:out` because Windows paths contain colons.
 
+To check someone else's cut against amends or a brief, use `video-review` instead.
+
 ## How it behaves
 
 - Everything re-encodes to H.264 and AAC MP4, so cuts are frame exact and the result

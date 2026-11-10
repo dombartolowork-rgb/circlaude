@@ -35,8 +35,10 @@ DEFAULT_OUT = os.path.join(os.path.expanduser("~"), "Downloads", "YouTube")
 
 YTDLP_REL = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/"
 DENO_REL = "https://github.com/denoland/deno/releases/latest/download/"
-FFMPEG_REL = "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/"
-FFMPEG_WIN = "ffmpeg-master-latest-win64-gpl"
+# Gyan's "full" Windows build, because it is the one with whisper speech recognition
+# (vid-transcribe, vid-review). BtbN's builds have it switched off. The zip is used,
+# not the .7z, because the stdlib can open a zip; its checksum is GitHub's own digest.
+FFMPEG_API = "https://api.github.com/repos/GyanD/codexffmpeg/releases/latest"
 
 # bv (not bv*) means a video-only stream, so YouTube's combined 360p file is never
 # chosen by accident. avc1 and m4a play everywhere, PowerPoint included.
@@ -146,15 +148,20 @@ def cmd_setup(args):
                 print("ffmpeg: --ffmpeg only fetches the Windows build. On a Mac, install ffmpeg "
                       "(for example `brew install ffmpeg`).")
             else:
-                name = FFMPEG_WIN + ".zip"
-                print(f"ffmpeg: downloading {name} (about 150MB)")
-                want = _sum_for(_fetch_text(FFMPEG_REL + "checksums.sha256"), name)
+                rel = json.loads(_fetch_text(FFMPEG_API))
+                asset = next((a for a in rel.get("assets", [])
+                              if re.fullmatch(r"ffmpeg-[\d.]+-full_build\.zip", a.get("name", ""))), None)
+                if not asset or not (asset.get("digest") or "").startswith("sha256:"):
+                    raise YTError("Could not find the ffmpeg full build (zip, with a checksum) in the latest release.")
+                name, want = asset["name"], asset["digest"].split(":", 1)[1].lower()
+                print(f"ffmpeg: downloading {name} ({asset.get('size', 0) // 1048576}MB, includes speech recognition)")
                 zpath = os.path.join(tmp, name)
-                if not want or _fetch_to(FFMPEG_REL + name, zpath) != want:
-                    raise YTError("ffmpeg checksum did not match its published checksums.sha256; nothing installed.")
+                if _fetch_to(asset["browser_download_url"], zpath) != want:
+                    raise YTError("ffmpeg checksum did not match the release's published digest; nothing installed.")
+                top = name[:-4]
                 with zipfile.ZipFile(zpath) as z:
                     for tool in ("ffmpeg.exe", "ffprobe.exe"):
-                        member = f"{FFMPEG_WIN}/bin/{tool}"
+                        member = f"{top}/bin/{tool}"
                         z.extract(member, tmp)
                         _place(os.path.join(tmp, *member.split("/")), os.path.join(bins.BIN, tool))
                 print("  checksum ok, installed ffmpeg and ffprobe in", bins.BIN)

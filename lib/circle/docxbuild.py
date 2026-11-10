@@ -18,6 +18,7 @@ family name is **"Roboto Serif 20pt"**, and Word matches on that name, so plain
 "Roboto Serif" silently substitutes.
 """
 import os
+import struct
 import zipfile
 
 HEADING_FONT = "BBH Hegarty"
@@ -73,6 +74,7 @@ class Doc:
 
     def __init__(self):
         self.body = []
+        self.media = []   # (part name, bytes), for image()
 
     # --- paragraphs ---
 
@@ -170,13 +172,44 @@ class Doc:
         # Word needs a paragraph after a table, or two tables merge into one.
         return self.spacer(4)
 
+    # --- images ---
+
+    def image(self, path, width_cm=16.0, max_height_cm=None):
+        """An inline JPEG or PNG, scaled to width_cm (A4 text width is about 16cm),
+        or smaller if that would make it taller than max_height_cm."""
+        with open(path, "rb") as f:
+            data = f.read()
+        w, h = image_size(data)
+        ext = "png" if data[:8] == b"\x89PNG\r\n\x1a\n" else "jpg"
+        n = len(self.media) + 1
+        self.media.append((f"media/image{n}.{ext}", data))
+        cx = int(width_cm * 360000)
+        cy = int(cx * h / w) if w else cx
+        if max_height_cm and cy > max_height_cm * 360000:
+            cx, cy = int(cx * max_height_cm * 360000 / cy), int(max_height_cm * 360000)
+        A = "http://schemas.openxmlformats.org/drawingml/2006/main"
+        PIC = "http://schemas.openxmlformats.org/drawingml/2006/picture"
+        self.body.append(
+            '<w:p><w:pPr><w:spacing w:after="80"/></w:pPr><w:r><w:drawing>'
+            f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
+            f'<wp:docPr id="{n}" name="Picture {n}"/>'
+            f'<a:graphic xmlns:a="{A}"><a:graphicData uri="{PIC}"><pic:pic xmlns:pic="{PIC}">'
+            f'<pic:nvPicPr><pic:cNvPr id="{n}" name="image{n}.{ext}"/><pic:cNvPicPr/></pic:nvPicPr>'
+            f'<pic:blipFill><a:blip r:embed="rIdImg{n}"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill>'
+            f'<pic:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="{cx}" cy="{cy}"/></a:xfrm>'
+            '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom></pic:spPr></pic:pic>'
+            '</a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>')
+        return self
+
     # --- output ---
 
     def xml(self):
         return (
             '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
             '<w:document xmlns:w="http://schemas.openxmlformats.org/'
-            'wordprocessingml/2006/main"><w:body>'
+            'wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/'
+            'officeDocument/2006/relationships" xmlns:wp="http://schemas.openxmlformats.org/'
+            'drawingml/2006/wordprocessingDrawing"><w:body>'
             + "".join(self.body)
             + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/>'
               '<w:pgMar w:top="1134" w:right="1134" w:bottom="1134" '
@@ -193,6 +226,8 @@ class Doc:
                 'content-types"><Default Extension="rels" ContentType='
                 '"application/vnd.openxmlformats-package.relationships+xml"/>'
                 '<Default Extension="xml" ContentType="application/xml"/>'
+                '<Default Extension="jpg" ContentType="image/jpeg"/>'
+                '<Default Extension="png" ContentType="image/png"/>'
                 '<Override PartName="/word/document.xml" ContentType='
                 '"application/vnd.openxmlformats-officedocument.'
                 'wordprocessingml.document.main+xml"/></Types>',
@@ -205,10 +240,40 @@ class Doc:
                 "</Relationships>",
             "word/document.xml": self.xml(),
         }
+        if self.media:
+            parts["word/_rels/document.xml.rels"] = (
+                '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+                '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                + "".join(f'<Relationship Id="rIdImg{i}" Type="http://schemas.openxmlformats.org/'
+                          f'officeDocument/2006/relationships/image" Target="{name}"/>'
+                          for i, (name, _) in enumerate(self.media, 1))
+                + "</Relationships>")
         with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
             for name, content in parts.items():
                 z.writestr(name, content)
+            for name, data in self.media:
+                z.writestr("word/" + name, data)
         return path
+
+
+def image_size(data):
+    """(width, height) of a PNG or JPEG, from its header."""
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return struct.unpack(">II", data[16:24])
+    i = 2
+    while i < len(data) - 9:
+        if data[i] != 0xFF:
+            i += 1
+            continue
+        marker = data[i + 1]
+        if marker in (0xC0, 0xC1, 0xC2, 0xC3, 0xC5, 0xC6, 0xC7, 0xC9, 0xCA, 0xCB, 0xCD, 0xCE, 0xCF):
+            h, w = struct.unpack(">HH", data[i + 5:i + 9])
+            return w, h
+        if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:
+            i += 2
+            continue
+        i += 2 + struct.unpack(">H", data[i + 2:i + 4])[0]
+    raise DocxError("Not a JPEG or PNG this can size.")
 
 
 def check_fonts():

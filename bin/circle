@@ -11,6 +11,8 @@ Claude. This command covers what that connector cannot:
   circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
   circle yt-get <url>                YouTube / TikTok download, yt-clip for one section (yt-setup once)
   circle vid-cut clip.mp4 --from 4   video: probe / cut / join / sheet / 1080 / pushend (needs ffmpeg)
+  circle vid-review cut.mp4 --prev v1.mp4   evidence to check a cut against amends: shots, loudness, VO
+  circle fathom-share <call link>          the public share link for a Fathom call, via Orbit's browser
   circle blender-run script.py -- out  Blender previz and space stills, headless; img-crop for decals
   circle img-gen "prompt" --ref a.png  Nano Banana images, guided by references (Circle's key)
   circle wa-connect                  link your WhatsApp (code opens in the browser), then wa-read / wa-send
@@ -25,8 +27,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
-from circle import (blendercmd, claudeactivity, graph, handovercmd, imagecmd, teamwork,  # noqa: E402
-                    trackercmd, videocmd, vimeocmd, wacmd, ytcmd)
+from circle import (blendercmd, browsercmd, claudeactivity, graph, handovercmd, imagecmd, reviewcmd,  # noqa: E402
+                    teamwork, trackercmd, videocmd, vimeocmd, wacmd, ytcmd)
 
 
 def cmd_login(args):
@@ -82,6 +84,8 @@ def main():
     handovercmd.register(sub)
     ytcmd.register(sub)
     videocmd.register(sub)
+    reviewcmd.register(sub)
+    browsercmd.register(sub)
     blendercmd.register(sub)
     imagecmd.register(sub)
     vimeocmd.register(sub)

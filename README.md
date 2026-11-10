@@ -25,12 +25,13 @@ and taking a section out of a video too big to download.
 And production tools: downloading and clipping YouTube, TikTok and Instagram
 video (`yt-get`, `yt-clip`, `yt-find`), quick frame-exact edits with ffmpeg
 (`vid-cut`, `vid-join` with dissolves, `vid-sheet` contact sheets, `vid-1080`,
-`vid-pushend`, `vid-frames`), Blender blockout previz for venue fly-throughs and
+`vid-pushend`, `vid-frames`), checking a cut against its amends or brief with a
+timecoded verdict per amend (`/review-cut`, `vid-review`, VO transcribed on the laptop), Blender blockout previz for venue fly-throughs and
 drone orbits, Blender models of real spaces (measured, or imported from a phone
 scan) with still renders from chosen angles (`blender-run`, templates in
 `tools/blender/`), and image generation with Google's Nano Banana models on
 Circle's own key (`img-gen`), which can paint those stills into realistic
-pictures. Uploading to Circle's Vimeo, Unlisted with a review link
+pictures. Public Fathom share links for drafts, taken from the user's own Chrome when Claude in Chrome is connected, or from Orbit's own clean browser after they sign in (`fathom-share`, with `browser-open`, `browser-eval`, `browser-close` for other sites with no API). Uploading to Circle's Vimeo, Unlisted with a review link
 (`vi-upload`), on Circle's own key.
 
 **Sending is gated.** Orbit ships a hook that makes every send, forward,
@@ -53,7 +54,8 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **Git for Windows** - Orbit's instructions run through Git's shell
 - **Python 3.12** - all users, with the py launcher
 - **ffmpeg** (for video and clips) - `circle yt-setup --ffmpeg` fetches it into
-  `~/.circle/bin`, or IT push it
+  `~/.circle/bin`, or IT push it. Checking VO in a cut needs a build with whisper
+  speech recognition: the one `yt-setup --ffmpeg` fetches has it
 - **Blender** (optional, for previz and spaces) - free from blender.org
 - **Circle's Vertex AI key** (optional, for image generation) - from whoever holds
   Circle's Google Cloud account, saved during `/orbit:onboard`; never commit it

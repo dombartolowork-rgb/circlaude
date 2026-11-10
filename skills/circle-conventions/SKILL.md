@@ -91,10 +91,34 @@ a colleague or client clicking it hits a wall. Other people need the public shar
 link, `fathom.video/share/...`.
 
 The Fathom connector only ever returns the `/calls/` link and cannot make a share
-link. So when a draft needs one, **ask the user for it before drafting** (on the
-call page in Fathom: Share, then Copy link). If they are not around, leave a
-visible placeholder such as `[Fathom share link]` and say so when showing the
-draft, rather than pasting the `/calls/` link in.
+link. Get the share link **before drafting**, trying these in order:
+
+1. **Take it yourself through Claude in Chrome.** Most people are signed in to
+   Fathom in their own Chrome. If the Chrome tools are loaded and
+   `tabs_context_mcp` answers, open the `/calls/` link in a new tab, click
+   **Share**, and read the `fathom.video/share/...` link out of the dialog (it
+   sits in a text box or a link; `find` or `get_page_text` will show it). Don't
+   rely on the Copy button, because you can't read the clipboard. Close the tab
+   afterwards. If the page shows a Fathom sign-in instead, they aren't signed
+   in there: go to step 2.
+2. **Otherwise, ask, and offer to fetch it.** Use `AskUserQuestion`:
+   - **"I'll paste it"**: on the call page in Fathom, Share, then Copy link. Give
+     them the `/calls/` link so they land on the right call.
+   - **"Fetch it for me"**: run `circle fathom-share <calls link>`. It opens
+     Orbit's own browser, a clean window with none of their logins, so they
+     sign in to Fathom there once; then it clicks Share and prints the link.
+     Tell them a window is about to open and that it is waiting for them to
+     sign in. Run `circle browser-close` when done (the sign-in is kept for
+     next time; `--wipe` forgets it).
+3. **If they are not around**, leave a visible placeholder such as
+   `[Fathom share link]` and say so when showing the draft, rather than pasting
+   the `/calls/` link in.
+
+**Check what you got.** It must start `https://fathom.video/share/`. Never turn
+sharing on or change who can see a call: if the Share dialog shows no link
+because sharing is off, stop and ask, because switching it on makes the
+recording viewable by anyone with the link. A call someone else recorded may not
+offer a share link at all to this user; ask the recorder instead.
 
 A `/calls/` link is fine in the user's own notes, diary blocks or chat, since only
 they open those.

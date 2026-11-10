@@ -7,6 +7,7 @@
     circle vi-share <id> [<id> ...]           the link to send outside Circle, Unlisted first
     circle vi-upload <file> --name "..."      upload, Unlisted by default, with a review link
     circle vi-comments <id>                   review comments on a video
+    circle vi-comment <id> --file notes.txt   post a comment (only on the user's go)
 
 The key is Circle's, a personal access token on the agency's Vimeo account, the same
 for everyone who has it: VIMEO_TOKEN, or the file ~/.circle/vimeo_token.json. Like the
@@ -275,6 +276,20 @@ def cmd_comments(args):
     print(f"\n{len(rows)} comment(s)")
 
 
+def cmd_comment(args):
+    """Post one comment. The API cannot pin a note to a timecode the way the review page
+    does, so timecodes go in the text. Anyone who can open the video can read it."""
+    text = args.text
+    if args.file:
+        with open(args.file, encoding="utf-8") as f:
+            text = f.read()
+    if not (text or "").strip():
+        raise VimeoError("Nothing to post: give --text or --file.")
+    st, d = call(f"/videos/{args.id}/comments", method="POST", body={"text": text.strip()})
+    _check(st, d, ok=(200, 201))
+    print("posted:", d.get("link") or d.get("uri"))
+
+
 def register(sub):
     p = sub.add_parser("vi-setup", help="save Circle's Vimeo key (copy the key first)")
     p.add_argument("--key-stdin", action="store_true", help="read the key from standard input")
@@ -309,3 +324,9 @@ def register(sub):
     p = sub.add_parser("vi-comments", help="review comments on a video")
     p.add_argument("id")
     p.set_defaults(func=cmd_comments)
+
+    p = sub.add_parser("vi-comment", help="post a comment on a video (timecodes go in the text)")
+    p.add_argument("id")
+    p.add_argument("--text")
+    p.add_argument("--file", help="read the comment from a text file")
+    p.set_defaults(func=cmd_comment)
