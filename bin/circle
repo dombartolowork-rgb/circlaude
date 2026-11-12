@@ -8,10 +8,12 @@ Claude. This command covers what that connector cannot:
   circle whoami                      who am I, and what can I do
   circle tracker find SUB133         the Project Tracker: codes, rows, next free code
   circle handover-render plan.json   leave handover: build / upload the Word document
+  circle braindump-render plan.json  a call written up as a Word brain dump, links included
   circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
   circle yt-get <url>                YouTube / TikTok download, yt-clip for one section (yt-setup once)
   circle vid-cut clip.mp4 --from 4   video: probe / cut / join / sheet / 1080 / pushend (needs ffmpeg)
   circle vid-review cut.mp4 --prev v1.mp4   evidence to check a cut against amends: shots, loudness, VO
+  circle deck-text deck.pptx               decks: read / render / pick / replace / swap-image / insert
   circle fathom-share <call link>          the public share link for a Fathom call, via Orbit's browser
   circle blender-run script.py -- out  Blender previz and space stills, headless; img-crop for decals
   circle img-gen "prompt" --ref a.png  Nano Banana images, guided by references (Circle's key)
@@ -27,7 +29,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
-from circle import (blendercmd, browsercmd, claudeactivity, graph, handovercmd, imagecmd, reviewcmd,  # noqa: E402
+from circle import (blendercmd, braindumpcmd, browsercmd, claudeactivity, deckcmd, graph, handovercmd, imagecmd, reviewcmd,  # noqa: E402
                     teamwork, trackercmd, videocmd, vimeocmd, wacmd, ytcmd)
 
 
@@ -82,10 +84,12 @@ def main():
     trackercmd.register(sub)
     teamwork.register(sub)
     handovercmd.register(sub)
+    braindumpcmd.register(sub)
     ytcmd.register(sub)
     videocmd.register(sub)
     reviewcmd.register(sub)
     browsercmd.register(sub)
+    deckcmd.register(sub)
     blendercmd.register(sub)
     imagecmd.register(sub)
     vimeocmd.register(sub)

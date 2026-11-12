@@ -75,6 +75,7 @@ class Doc:
     def __init__(self):
         self.body = []
         self.media = []   # (part name, bytes), for image()
+        self.links = []   # external URLs, for link()
 
     # --- paragraphs ---
 
@@ -100,6 +101,22 @@ class Doc:
         for it in items:
             self._para(_run("• " + str(it), BODY_FONT, SIZES["body"]),
                        after=2, indent=280)
+        return self
+
+    def link(self, label, url, note=None, indent=0):
+        """A clickable link on its own line, with an optional plain note after it.
+        Underlined rather than blue: the house style is monochrome."""
+        self.links.append(str(url))
+        rid = f"rIdLink{len(self.links)}"
+        half = int(round(SIZES["body"] * 2))
+        f = BODY_FONT
+        run = (f'<w:hyperlink r:id="{rid}" w:history="1"><w:r><w:rPr>'
+               f'<w:rFonts w:ascii="{f}" w:hAnsi="{f}" w:cs="{f}" w:eastAsia="{f}"/>'
+               f'<w:u w:val="single"/><w:sz w:val="{half}"/><w:szCs w:val="{half}"/></w:rPr>'
+               f'<w:t xml:space="preserve">{esc(label or url)}</w:t></w:r></w:hyperlink>')
+        if note:
+            run += _run("  " + str(note), BODY_FONT, SIZES["meta"], colour=GREY_INK)
+        self._para(run, after=4, indent=indent)
         return self
 
     def spacer(self, pt=6):
@@ -240,13 +257,17 @@ class Doc:
                 "</Relationships>",
             "word/document.xml": self.xml(),
         }
-        if self.media:
+        if self.media or self.links:
             parts["word/_rels/document.xml.rels"] = (
                 '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
                 '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
                 + "".join(f'<Relationship Id="rIdImg{i}" Type="http://schemas.openxmlformats.org/'
                           f'officeDocument/2006/relationships/image" Target="{name}"/>'
                           for i, (name, _) in enumerate(self.media, 1))
+                + "".join(f'<Relationship Id="rIdLink{i}" Type="http://schemas.openxmlformats.org/'
+                          f'officeDocument/2006/relationships/hyperlink" Target="{esc(u).replace(chr(34), "%22")}" '
+                          'TargetMode="External"/>'
+                          for i, u in enumerate(self.links, 1))
                 + "</Relationships>")
         with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
             for name, content in parts.items():

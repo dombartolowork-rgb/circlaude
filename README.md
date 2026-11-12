@@ -17,7 +17,7 @@ reconciles against Sent Items, a loose-ends sweep that finds the emails
 nobody answered and what each one is holding up (`/loose-ends`), day planning
 that blocks your tasks into Outlook round your meetings (`/plan-day`), timesheet drafting from the calendar, sent mail
 and what you worked on in Claude (`claude-activity`), opening a new job in the
-right order, the weekly status deck, the annual leave handover, clearing Pleo expenses
+right order, telling finance a client needs billing (`/bill-client`), the weekly status deck, PowerPoint decks (`circle-decks`: read and summarise a deck, pull a slide out, build new decks on Circle's brand master (`deck-brand`, `deck-layouts`, `deck-add-slide`, `deck-fill`), build slides that match the deck they're going into as "to be merged" files, merge them in without breaking sections or hidden slides, swap text and pictures, and render slides to check them, with `deck-text`, `deck-render`, `deck-pick`, `deck-replace`, `deck-swap-image`, `deck-insert`), the annual leave handover, writing a call up as a Word brain dump with every link shared (`/brain-dump`), clearing Pleo expenses
 (receipts found and attached, each one coded to the right job), handling
 client transfers and shared SharePoint files safely, SwissTransfer downloads,
 and taking a section out of a video too big to download.
