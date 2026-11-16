@@ -11,18 +11,23 @@ else can read your mail through it.
 
 ## What you need first
 
-IT set these up for you:
-
 1. **The Claude desktop app**, signed in with your Circle Claude account
-2. **Git** and **Python**, which Orbit needs in the background
-   (and **ffmpeg** and **Blender** if you will use the video or previz tools)
-3. **Access to the Microsoft 365 connector** in Claude, which IT switch on
+2. **Access to the Microsoft 365 connector** in Claude, which IT switch on
    person by person
 
 ## Setting it up
 
-Dom will add Orbit to your Claude the first time, from a shared Circle folder.
-Then, in Claude Code, run:
+1. Open the **Microsoft Store** and install two free apps: **Python 3.12**
+   (the one from the Python Software Foundation) and **Git**. You don't need IT.
+
+2. In Claude Code, type these two lines, one at a time:
+
+```
+/plugin marketplace add dombartolowork-rgb/circlaude
+/plugin install orbit@orbit
+```
+
+3. Restart Claude, then type:
 
 ```
 /orbit:onboard
@@ -36,7 +41,8 @@ every time.
 
 ## Using it
 
-Just ask, in normal English. There are no commands to learn.
+Just ask, in normal English. There are no commands to learn. To see
+everything it can do, with a walkthrough, type `/orbit:help`.
 
 - what do I need to reply to today
 - am I free Thursday afternoon

@@ -17,7 +17,7 @@ reconciles against Sent Items, a loose-ends sweep that finds the emails
 nobody answered and what each one is holding up (`/loose-ends`), day planning
 that blocks your tasks into Outlook round your meetings (`/plan-day`), timesheet drafting from the calendar, sent mail
 and what you worked on in Claude (`claude-activity`), opening a new job in the
-right order, telling finance a client needs billing (`/bill-client`), the weekly status deck, PowerPoint decks (`circle-decks`: read and summarise a deck, pull a slide out, build new decks on Circle's brand master (`deck-brand`, `deck-layouts`, `deck-add-slide`, `deck-fill`), build slides that match the deck they're going into as "to be merged" files, merge them in without breaking sections or hidden slides, swap text and pictures, and render slides to check them, with `deck-text`, `deck-render`, `deck-pick`, `deck-replace`, `deck-swap-image`, `deck-insert`), the annual leave handover, writing a call up as a Word brain dump with every link shared (`/brain-dump`), clearing Pleo expenses
+right order, telling finance a client needs billing (`/bill-client`), the weekly status deck, PowerPoint decks (`circle-decks`: read and summarise a deck, pull a slide out, build new decks on Circle's brand master (`deck-brand`, `deck-layouts`, `deck-add-slide`, `deck-fill`), build slides that match the deck they're going into as "to be merged" files, merge them in without breaking sections or hidden slides, swap text and pictures, and render slides to check them, with `deck-text`, `deck-render`, `deck-pick`, `deck-replace`, `deck-swap-image`, `deck-insert`), the annual leave handover, writing a call up as a Word brain dump with every link shared (`/brain-dump`), making the client copy of a budget without touching the budget (`/client-copy`: tidied, renumbered, checked to the penny against the worksheet, as a linked copy of the workbook and a values-only Excel), clearing Pleo expenses
 (receipts found and attached, each one coded to the right job), handling
 client transfers and shared SharePoint files safely, SwissTransfer downloads,
 and taking a section out of a video too big to download.
@@ -51,8 +51,11 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **Claude Code Desktop**, signed in with a Circle Claude Team seat
 - **The Microsoft 365 connector** switched on in Claude, and the person assigned
   to it by IT
-- **Git for Windows** - Orbit's instructions run through Git's shell
-- **Python 3.12** - all users, with the py launcher
+- **Git** - Orbit's instructions run through Git's shell. The Microsoft Store
+  version works, no IT needed
+- **Python 3.12** - the Microsoft Store version (Python Software Foundation)
+  works, no IT needed. It gives `python` rather than `py`; `circle.cmd` falls
+  back to it
 - **ffmpeg** (for video and clips) - `circle yt-setup --ffmpeg` fetches it into
   `~/.circle/bin`, or IT push it. Checking VO in a cut needs a build with whisper
   speech recognition: the one `yt-setup --ffmpeg` fetches has it
@@ -62,26 +65,24 @@ registration exists. Teamwork uses your own API key or the Teamwork connector.
 - **Circle's Vimeo key** (optional, for uploading to Vimeo) - from Dom, saved during
   `/orbit:onboard`; never commit it
 
-IT push the installs. On a Mac, Python and Git are usually already present;
-install ffmpeg separately.
+On a Mac, Python and Git are usually already present; install ffmpeg separately.
 
 ## Setup
 
-See `ONBOARDING.md` for the walkthrough, or in Claude Code run `/orbit:onboard`
-and it will do the whole thing with you.
-
-Orbit installs from a folder, so it does not need GitHub. The plan is a
-SharePoint library synced to each laptop by OneDrive. In Claude Code:
+Orbit installs straight from this public GitHub repo. In Claude Code:
 
 ```
-/plugin marketplace add "<path to the synced Orbit folder>"
+/plugin marketplace add dombartolowork-rgb/circlaude
 /plugin install orbit@orbit
 ```
 
-Updates: publish a new version (bump `version` in both `.claude-plugin` files)
-into the library; users run `/plugin marketplace update orbit` then
-`/plugin update orbit@orbit` and restart. Verified 30 Sep 2026 against a plain
-folder.
+Restart Claude, then run `/orbit:onboard`, which does the rest with you. See
+`ONBOARDING.md` for the plain-English version. `/orbit:help` shows everything
+Orbit can do, with a walkthrough.
+
+Updates: bump `version` in both `.claude-plugin` files and push; users run
+`/plugin marketplace update orbit` then `/plugin update orbit@orbit` and
+restart.
 
 ## Notes
 

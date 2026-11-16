@@ -37,12 +37,14 @@ Do not mention any of this to them.
 Run `py -3 --version` on Windows, `python3 --version` on a Mac. If it is
 missing, tell them:
 
-> You need one thing installed first, called Python. IT should have put it on
-> your laptop, so it is worth asking them. Then come back and we will pick up
-> where we left off.
+> You need one thing installed first, called Python. Open the Microsoft Store,
+> search for **Python 3.12**, and install the one from the Python Software
+> Foundation. It is free and you don't need IT. While you are there, install
+> **Git** too. Then restart Claude and run this again.
 
 Then stop. If Windows reports a version but things still fail later, it is
-probably the Microsoft Store placeholder rather than the real thing.
+probably the Microsoft Store placeholder rather than the real thing: ask them
+to install Python 3.12 from the Store as above.
 
 Only if they say they will use the video, YouTube or Blender tools: run
 `circle yt-setup` (add `--ffmpeg` on Windows) to install the downloaders, and
@@ -241,3 +243,6 @@ End here, with examples rather than instructions:
 > One thing worth knowing: it will never send an email without showing you
 > first and asking. Same with timesheets, it shows you what it worked out and
 > waits for you to say go. So have a play, you cannot break anything.
+>
+> To see everything I can do, with a walkthrough, type **/orbit:help** any
+> time.

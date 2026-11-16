@@ -9,6 +9,7 @@ Claude. This command covers what that connector cannot:
   circle tracker find SUB133         the Project Tracker: codes, rows, next free code
   circle handover-render plan.json   leave handover: build / upload the Word document
   circle braindump-render plan.json  a call written up as a Word brain dump, links included
+  circle clientcopy-build budget.xlsx  budgets: the client copy, tidied and checked (clientcopy-fetch / -check first)
   circle tw-logged --week last       Teamwork: timesheet audit / project codes / logging
   circle yt-get <url>                YouTube / TikTok download, yt-clip for one section (yt-setup once)
   circle vid-cut clip.mp4 --from 4   video: probe / cut / join / sheet / 1080 / pushend (needs ffmpeg)
@@ -29,7 +30,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "lib"))
 
-from circle import (blendercmd, braindumpcmd, browsercmd, claudeactivity, deckcmd, graph, handovercmd, imagecmd, reviewcmd,  # noqa: E402
+from circle import (blendercmd, braindumpcmd, browsercmd, claudeactivity, clientcopycmd, deckcmd, graph, handovercmd, imagecmd, reviewcmd,  # noqa: E402
                     teamwork, trackercmd, videocmd, vimeocmd, wacmd, ytcmd)
 
 
@@ -85,6 +86,7 @@ def main():
     teamwork.register(sub)
     handovercmd.register(sub)
     braindumpcmd.register(sub)
+    clientcopycmd.register(sub)
     ytcmd.register(sub)
     videocmd.register(sub)
     reviewcmd.register(sub)
