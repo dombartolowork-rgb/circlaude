@@ -5,6 +5,8 @@ description: Check a video cut against the amends, client feedback or brief it w
 
 # Checking a cut against amends or a brief
 
+**Microsoft sign-in:** if a `circle` command here fails with "Not signed in to Microsoft" or "Run: circle login", follow `"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` to sign them in, then carry on. Don't show them the error.
+
 **Invoking it:** where this says `circle`, run `"$CLAUDE_PLUGIN_ROOT/bin/circle"`
 unless `circle` is already on PATH (on Windows, `bin\circle.cmd`). Needs ffmpeg:
 see `video-edit`. Load `circle-conventions` before writing anything for someone

@@ -5,6 +5,8 @@ description: Build the user's annual leave handover document - read the last two
 
 # The handover builder
 
+**Microsoft sign-in:** if a `circle` command here fails with "Not signed in to Microsoft" or "Run: circle login", follow `"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` to sign them in, then carry on. Don't show them the error.
+
 Circle already has a handover format and a folder it keeps them in. This builds
 one in that format from evidence rather than from memory, because the projects
 someone forgets to mention are exactly the ones that go wrong while they are

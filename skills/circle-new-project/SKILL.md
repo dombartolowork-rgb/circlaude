@@ -5,6 +5,8 @@ description: Open a new Circle Agency job properly - claim the sequential code f
 
 # Opening a new project
 
+**Microsoft sign-in:** if a `circle` command here fails with "Not signed in to Microsoft" or "Run: circle login", follow `"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` to sign them in, then carry on. Don't show them the error.
+
 ## Invoking the CLI
 
 Examples below write `circle` for readability. **Run it as

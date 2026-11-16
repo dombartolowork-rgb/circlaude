@@ -69,34 +69,13 @@ That is the proof it works. If the connector tools are not there at all:
 If signing in to it says they are blocked or not assigned, that is IT's side:
 they add people to it one by one. Say Dom can sort it, and stop there.
 
-**4. The SharePoint sign-in, only if they need it.**
+**4. No SharePoint sign-in here.**
 
-Ask first:
-
-> Do you ever open new jobs, do the weekly status deck, or write a handover
-> before leave? Those need one more quick sign-in. If not, we can skip it.
-
-If they say no, skip to step 5. If yes, say what is coming:
-
-> This one lets me read the Project Tracker and save files to SharePoint for
-> you. I will get you a short code, you type it into a Microsoft page, and that
-> is the only bit you have to do. It signs in as you, so it can only ever see
-> what you can already see.
-
-Run `circle login` **in the background** and read its output. It prints a
-short code and a URL. Give them both, clearly:
-
-> Open **microsoft.com/devicelogin** and enter this code: **XXXXXXXXX**
-> Then sign in with your normal Circle email, the same as Outlook.
-> You have about 15 minutes, so no rush. Tell me when you are done.
-
-While they do that the sign-in is waiting in the background and will pick
-itself up. When they say they are done, run `circle whoami` and read back the
-address it reports. Then check it works with `circle tracker sheets`, and tell
-them in a sentence ("I can see the Project Tracker."). If that check errors,
-the step has failed: do not reason your way past it, say so and stop.
-
-If it did not take, the code may have expired. Say so lightly and get a new one.
+Do not run `circle login` during onboarding, and do not mention it. The few
+jobs that need Orbit's own Microsoft sign-in (job codes, the deck template,
+budgets, saving handovers) ask for it the first time they are used, as
+`"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` describes. If they
+already signed in on an earlier version, that still works. Go to step 5.
 
 **5. Images, if they want them.**
 

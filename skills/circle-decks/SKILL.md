@@ -5,6 +5,8 @@ description: Work with PowerPoint decks the way Circle does - read and summarise
 
 # Decks
 
+**Microsoft sign-in:** if a `circle` command here fails with "Not signed in to Microsoft" or "Run: circle login", follow `"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` to sign them in, then carry on. Don't show them the error.
+
 **Invoking it:** where this says `circle`, run `"$CLAUDE_PLUGIN_ROOT/bin/circle"`
 unless `circle` is on PATH (on Windows, `bin\circle.cmd`). Load `circle-conventions`
 before writing any words that go on a slide. The weekly WOW status deck has its own

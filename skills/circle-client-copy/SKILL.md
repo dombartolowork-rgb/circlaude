@@ -5,6 +5,8 @@ description: Turn a Circle budget workbook into its client copy - the client-fac
 
 # Client copy budgets
 
+**Microsoft sign-in:** if a `circle` command here fails with "Not signed in to Microsoft" or "Run: circle login", follow `"$CLAUDE_PLUGIN_ROOT/reference/sharepoint-signin.md"` to sign them in, then carry on. Don't show them the error.
+
 A budget workbook has a **WORKSHEET** tab (the budget itself, with IN and OUT
 costs side by side) and a client-facing tab that pulls from it by formula:
 **Client Copy**, or **PREVIEW** on budgets where nobody has duplicated it yet.

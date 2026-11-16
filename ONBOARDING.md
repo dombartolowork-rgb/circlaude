@@ -36,11 +36,12 @@ Please install the Orbit plugin: run claude plugin marketplace add dombartolowor
 /orbit:onboard
 ```
 
-That does the rest for you. It checks Claude can see your email and calendar,
-and if you open jobs, do the status deck or write handovers, it asks you to sign
-in once more: it gives you a short code, you open **microsoft.com/devicelogin**,
-type the code in and sign in with your normal Circle email. That is once, not
-every time.
+That does the rest for you. It checks Claude can see your email and calendar.
+
+The first time you open a job, build a deck on the Circle template, or save a
+handover, it asks you to sign in once more: it gives you a short code, you open
+**microsoft.com/devicelogin**, type the code in and sign in with your normal
+Circle email. That is once, not every time.
 
 ## Using it
 
