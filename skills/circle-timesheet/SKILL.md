@@ -20,8 +20,8 @@ solve, not a fact to report.
 
 Internal time books to project **354873 ("Non-billable activities")** with
 `billable: false`, and specifically to a **task inside** it, not the bare
-project. The user's identity comes from their own `TEAMWORK_API_KEY`, so time
-cannot land on someone else by default.
+project. The user's identity comes from their own Teamwork connector sign-in
+(`twprojects-get_user_me`), so time cannot land on someone else by default.
 
 ## Their conventions come first
 
@@ -174,24 +174,25 @@ the table they approved, and report any difference rather than restating your
 own arithmetic. Then give a one-line summary and suggest they glance at
 Teamwork. The phrase covers the split and the codes shown in that draft.
 
-## Two routes: the CLI or the connector
+## The route: the Teamwork connector
 
-Either works, and which one is available depends on the person.
+**Use the claude.ai Teamwork MCP connector.** It needs no key, signs in as the
+user, and is the route for everyone. Never ask anyone for a Teamwork API key.
+If the connector is not attached, tell them to switch it on in Claude's
+Settings, Connectors, Teamwork, and stop there.
 
-**`circle tw-*`** needs `TEAMWORK_API_KEY` in the environment. Prefer it when
-it is there, for one reason: `circle tw-log` has a **real dry run**, so the
-plan can be checked against resolved project and task names before anything
-is written.
+The steps above name `circle tw-*` commands; map them onto the connector:
+`twprojects-list_timelogs` (with their `assigned_user_ids`) instead of
+`tw-logged`, `twprojects-list_projects` with a `search_term` instead of
+`tw-projects`, `twprojects-create_timelog` per entry instead of
+`tw-log --commit`. The connector has **no dry run**, so build the per-day
+table yourself from the entries file before posting, and hold to the same
+approval phrase. That table is the step that catches a wrong project code, so
+never skip it.
 
-**The claude.ai Teamwork MCP connector** needs no key and works if it is
-attached to their Claude account. The same process maps onto it: `twprojects-list_timelogs` (with
-their `assigned_user_ids`) instead of `tw-logged`, `twprojects-list_projects`
-with a `search_term` instead of `tw-projects`, `twprojects-create_timelog`
-per entry instead of `tw-log --commit`. The connector has **no dry run**, so
-build the per-day table yourself from the entries file before posting, and
-hold to the same approval phrase. Losing the dry run is the only real cost,
-and it is the step that catches a wrong project code, so do not skip building
-that table by hand.
+`circle tw-*` still works for anyone who already has `TEAMWORK_API_KEY` set,
+and `tw-log` has a real dry run, but it is a legacy route: do not set it up
+for anyone new.
 
 ## Billable or internal
 

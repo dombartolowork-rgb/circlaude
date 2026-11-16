@@ -39,8 +39,8 @@ missing, tell them:
 
 > You need one thing installed first, called Python. Open the Microsoft Store,
 > search for **Python 3.12**, and install the one from the Python Software
-> Foundation. It is free and you don't need IT. While you are there, install
-> **Git** too. Then restart Claude and run this again.
+> Foundation. It is free and you don't need IT. Then restart Claude and run
+> this again.
 
 Then stop. If Windows reports a version but things still fail later, it is
 probably the Microsoft Store placeholder rather than the real thing: ask them
@@ -152,16 +152,15 @@ tool (`twprojects-get_user_me`). Do not mention a key until that check has
 failed. If it works, they need nothing else: tell them timesheets are ready
 and move on. `circle whoami` saying no key is set is expected here, not a fault.
 
-If it does not, they need a key from Teamwork. Put it in their terms:
+If it does not, they need to switch the Teamwork connector on. **Never ask for a
+Teamwork key**: the connector replaces it. Put it in their terms:
 
-> If you want it to help with timesheets, there is a long password you copy
-> out of Teamwork. It is under your avatar, Edit My Details, then API &
-> Mobile. Do not paste it to me, just save it somewhere on your machine and I
-> will show you where it goes. Or skip this, it is only for timesheets.
+> For timesheets I need Teamwork switched on in Claude. Open Claude's
+> **Settings**, then **Connectors**, find **Teamwork**, click **Connect** and
+> sign in with your normal Teamwork login. Then start a new chat and run
+> /orbit:onboard again. Or skip this, it is only for timesheets.
 
-**Never ask them to paste their Teamwork key into the chat**: that one is personal
-to them. (Circle's image and Vimeo keys in steps 5 and 6 are different: they are shared, and
-pasting them is fine.)
+If Teamwork is not in their list of connectors, say Dom can sort it and move on.
 
 **8. Learn how they log their time.** Only if step 7 happened.
 

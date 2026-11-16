@@ -17,17 +17,20 @@ else can read your mail through it.
 
 ## Setting it up
 
-1. Open the **Microsoft Store** and install two free apps: **Python 3.12**
-   (the one from the Python Software Foundation) and **Git**. You don't need IT.
+1. Open the **Microsoft Store** and install **Python 3.12** (the one from the
+   Python Software Foundation). Then get **Git** from **git-scm.com** and click
+   through the installer with its default settings. You don't need IT.
 
-2. In Claude Code, type these two lines, one at a time:
+2. Open the Claude desktop app, click the **Code** tab, start a new session in
+   any folder, and paste this in:
 
 ```
-/plugin marketplace add dombartolowork-rgb/circlaude
-/plugin install orbit@orbit
+Please install the Orbit plugin: run claude plugin marketplace add dombartolowork-rgb/circlaude and then claude plugin install orbit@orbit
 ```
 
-3. Restart Claude, then type:
+   Claude asks permission to run those two commands. Say yes.
+
+3. Start a new session so Orbit loads, then type:
 
 ```
 /orbit:onboard

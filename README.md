@@ -44,15 +44,17 @@ Orbit's own sign-in, used only for SharePoint files, is a one-time device code;
 its token is stored at `~/.circle/orbit_token.json`, outside this folder.
 Which Entra app it uses is set in `~/.circle/config.json` (`client_id`,
 `tenant`), falling back to Microsoft's Office client until Circle's own app
-registration exists. Teamwork uses your own API key or the Teamwork connector.
+registration exists. Teamwork goes through the Teamwork connector in Claude
+(Settings, Connectors); no API key is needed.
 
 ## Requirements (Windows)
 
 - **Claude Code Desktop**, signed in with a Circle Claude Team seat
 - **The Microsoft 365 connector** switched on in Claude, and the person assigned
   to it by IT
-- **Git** - Orbit's instructions run through Git's shell. The Microsoft Store
-  version works, no IT needed
+- **Git for Windows** - Orbit's instructions run through Git's shell. Not in the
+  Microsoft Store: download it from git-scm.com and click through the installer
+  with its defaults
 - **Python 3.12** - the Microsoft Store version (Python Software Foundation)
   works, no IT needed. It gives `python` rather than `py`; `circle.cmd` falls
   back to it
@@ -69,20 +71,22 @@ On a Mac, Python and Git are usually already present; install ffmpeg separately.
 
 ## Setup
 
-Orbit installs straight from this public GitHub repo. In Claude Code:
+Orbit installs straight from this public GitHub repo. In the Claude desktop
+app, open the Code tab, start a session in any folder, and paste:
 
 ```
-/plugin marketplace add dombartolowork-rgb/circlaude
-/plugin install orbit@orbit
+Please install the Orbit plugin: run claude plugin marketplace add dombartolowork-rgb/circlaude and then claude plugin install orbit@orbit
 ```
 
-Restart Claude, then run `/orbit:onboard`, which does the rest with you. See
+Say yes when Claude asks to run the two commands. The `/plugin` menu lines are
+terminal-only and do not work in the desktop app, so do not give people those.
+Start a new session so Orbit loads, then run `/orbit:onboard`, which does the rest with you. See
 `ONBOARDING.md` for the plain-English version. `/orbit:help` shows everything
 Orbit can do, with a walkthrough.
 
-Updates: bump `version` in both `.claude-plugin` files and push; users run
-`/plugin marketplace update orbit` then `/plugin update orbit@orbit` and
-restart.
+Updates: bump `version` in both `.claude-plugin` files and push; users ask
+Claude to "run claude plugin marketplace update orbit and then claude plugin
+update orbit@orbit", then start a new session.
 
 ## Notes
 
