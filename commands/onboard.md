@@ -122,26 +122,34 @@ Do not upload anything as a test: that would put a file on the agency's account.
 it says the key was not accepted, it was probably copied short. Ask them to copy it
 again. If it still fails, say Dom can sort it and move on.
 
-**7. Ask how they log time.** Only if they want time logging at all. If they
-are just trying this out, skip it and say they can set it up later.
+**7. Teamwork. Always do this step.**
 
-Before saying anything about Teamwork, check whether the **Teamwork MCP
-connector** is attached to their Claude account, by quietly trying a Teamwork
-tool (`twprojects-get_user_me`). Do not mention a key until that check has
-failed. If it works, they need nothing else: tell them timesheets are ready
-and move on. `circle whoami` saying no key is set is expected here, not a fault.
+First, quietly check whether the **Teamwork connector** is attached to their
+Claude account by trying a Teamwork tool (`twprojects-get_user_me`). Never ask
+for a Teamwork key: the connector replaces it, and `circle whoami` saying no
+key is set is expected, not a fault.
 
-If it does not, they need to switch the Teamwork connector on. **Never ask for a
-Teamwork key**: the connector replaces it. Put it in their terms:
+**If it works**, tell them in a sentence ("Teamwork is connected, so I can help
+with your timesheets.") and go to step 8.
 
-> For timesheets I need Teamwork switched on in Claude. Open Claude's
-> **Settings**, then **Connectors**, find **Teamwork**, click **Connect** and
-> sign in with your normal Teamwork login. Then start a new chat and run
-> /orbit:onboard again. Or skip this, it is only for timesheets.
+**If it does not**, ask:
 
-If Teamwork is not in their list of connectors, say Dom can sort it and move on.
+> Do you log your time in Teamwork? If so, I can draft your timesheets for you.
 
-**8. Learn how they log their time.** Only if step 7 happened.
+If no, or they would rather leave it for now, say they can switch it on any
+time and go to step 9. If yes, put it in their terms:
+
+> Open Claude's **Settings**, then **Connectors**, find **Teamwork**, click
+> **Connect** and sign in with your normal Teamwork login. Tell me when it's
+> done.
+
+Wait, then check again with `twprojects-get_user_me`. Do not tell them to
+restart or run onboarding again. If it now works, go to step 8. If it still
+does not, or Teamwork is not in their list of connectors, say it may need a
+new chat to show up, that they can ask "set up Teamwork" next time, or that
+Dom can sort it, and go to step 9.
+
+**8. Learn how they log their time.** Only if Teamwork is connected.
 
 If `~/.circle/timesheet-policy.md` does not exist, build their timesheet
 profile as the `circle-timesheet` skill describes: look at their last few weeks
